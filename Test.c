@@ -1,1 +1,1 @@
-fgdfgdfgdfgfd
+#define stat 32;
