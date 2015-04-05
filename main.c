@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
+#include "jeu.h"
 
 /* Window resolution */
 #define WINDOW_WIDTH 1280
@@ -45,6 +46,7 @@ int main( int argc, char* args[] )
         }
       }
 
+      //jouer(); //test d'appel
       SDL_BlitSurface( image, NULL, screen, NULL );
       SDL_UpdateWindowSurface( window );
     }
