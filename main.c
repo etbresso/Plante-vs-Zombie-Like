@@ -46,7 +46,7 @@ int main( int argc, char* args[] )
         }
       }
 
-      //jouer(); //test d'appel
+      jouer(); //appel la fonction jouer dans jeu.c
       SDL_BlitSurface( image, NULL, screen, NULL );
       SDL_UpdateWindowSurface( window );
     }
