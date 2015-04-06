@@ -21,8 +21,11 @@ SDL_Event event;
 /* The game loop flag */
 int running = 1;
 
-/* to put the loaded image */
-SDL_Surface* image = NULL;
+/* to put the loaded fond */
+SDL_Surface* fond = NULL;
+
+//creation du fond
+SDL_Texture *image = NULL;
 
 int main( int argc, char* args[] )
 {
@@ -38,6 +41,7 @@ int main( int argc, char* args[] )
       SDL_WINDOW_SHOWN);
 
     screen = SDL_GetWindowSurface( window );
+    fond = SDL_LoadBMP( "images/fond.bmp" );
     image = SDL_LoadBMP( "images/sdl.bmp" );
     while( running ) {
       while( SDL_PollEvent( &event ) != 0 ) {
@@ -46,12 +50,12 @@ int main( int argc, char* args[] )
         }
       }
 
-      jouer(); //appel la fonction jouer dans jeu.c
-      SDL_BlitSurface( image, NULL, screen, NULL );
+      //jouer(); //appel la fonction jouer dans jeu.c
+      SDL_BlitSurface( fond, NULL, screen, NULL );
       SDL_UpdateWindowSurface( window );
     }
   }
-  SDL_FreeSurface( image );
+  SDL_FreeSurface( fond );
   SDL_DestroyWindow( window );
   SDL_Quit();
   return 0;
