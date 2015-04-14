@@ -24,8 +24,7 @@ int running = 1;
 /* to put the loaded fond */
 SDL_Surface* fond = NULL;
 
-//creation du fond
-SDL_Texture *image = NULL;
+SDL_Surface* plante1;
 
 int main( int argc, char* args[] )
 {
@@ -42,7 +41,9 @@ int main( int argc, char* args[] )
 
     screen = SDL_GetWindowSurface( window );
     fond = SDL_LoadBMP( "images/fond.bmp" );
-    image = SDL_LoadBMP( "images/sdl.bmp" );
+    plante1 = SDL_LoadBMP("images/Plante 1.bmp");
+    SDL_Rect dest = { 144/2 - plante1->w/2-8,128/2 - plante1->h/2, 0, 0};
+
     while( running ) {
       while( SDL_PollEvent( &event ) != 0 ) {
         if( event.type == SDL_QUIT ) {
@@ -52,9 +53,11 @@ int main( int argc, char* args[] )
 
       //jouer(); //appel la fonction jouer dans jeu.c
       SDL_BlitSurface( fond, NULL, screen, NULL );
+      SDL_BlitSurface( plante1, NULL, screen, &dest );
       SDL_UpdateWindowSurface( window );
     }
   }
+  SDL_FreeSurface( plante1 );
   SDL_FreeSurface( fond );
   SDL_DestroyWindow( window );
   SDL_Quit();
