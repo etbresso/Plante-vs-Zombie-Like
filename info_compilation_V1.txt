@@ -3,4 +3,4 @@ gcc main.c jeu.c -o test -Wall -lSDL2
 
 
 -lSDL2: appelle la librairie SDL2
-main.c jeu.c: compile tout les fichiers utilisé dans le code.
+
