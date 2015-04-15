@@ -21,10 +21,8 @@ SDL_Event event;
 /* The game loop flag */
 int running = 1;
 
-/* to put the loaded fond */
-SDL_Surface* fond = NULL;
-
-SDL_Surface* plante1;
+/* to put the loaded menu */
+SDL_Surface* menu = NULL;
 
 int main( int argc, char* args[] )
 {
@@ -40,25 +38,30 @@ int main( int argc, char* args[] )
       SDL_WINDOW_SHOWN);
 
     screen = SDL_GetWindowSurface( window );
-    fond = SDL_LoadBMP( "images/fond.bmp" );
-    plante1 = SDL_LoadBMP("images/Plante 1.bmp");
-    SDL_Rect dest = { 144/2 - plante1->w/2-8,128/2 - plante1->h/2, 0, 0};
+    menu = SDL_LoadBMP( "images/menu.bmp" );
 
     while( running ) {
       while( SDL_PollEvent( &event ) != 0 ) {
         if( event.type == SDL_QUIT ) {
           running = 0;
         }
+        else if (event.type == SDL_KEYDOWN){
+          if (event.key.keysym.sym == SDLK_ESCAPE){ // echap pour quitter
+            running = 0;
+          }
+          else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){ //Enter pour lancer le jeu (temporaire, objectif bouton)
+            SDL_Log("Lancement du niveau");
+            interface(screen);
+            //jouer(); //appel la fonction jouer dans jeu.c
+          }
+        }
       }
-
-      //jouer(); //appel la fonction jouer dans jeu.c
-      SDL_BlitSurface( fond, NULL, screen, NULL );
-      SDL_BlitSurface( plante1, NULL, screen, &dest );
+      SDL_BlitSurface( menu, NULL, screen, NULL );
       SDL_UpdateWindowSurface( window );
     }
   }
-  SDL_FreeSurface( plante1 );
-  SDL_FreeSurface( fond );
+  quitter();
+  SDL_FreeSurface( menu );
   SDL_DestroyWindow( window );
   SDL_Quit();
   return 0;
