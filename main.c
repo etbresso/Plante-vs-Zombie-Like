@@ -51,17 +51,22 @@ int main( int argc, char* args[] )
           }
           else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){ //Enter pour lancer le jeu (temporaire, objectif bouton)
             SDL_Log("Lancement du niveau");
-            SDL_FreeSurface( menu ); // on supprime l'image du menu
-            interface(screen);//appel de l'interface du jeu
-            //jouer(); //appel la fonction jouer dans jeu.c
+            jouer(); //appel la fonction jouer dans jeu.c
           }
         }
       }
-      SDL_BlitSurface( menu, NULL, screen, NULL );
-      SDL_UpdateWindowSurface( window );
+      if (appelJeu() == 0){ // si jouer n'est pas lancé
+        SDL_BlitSurface( menu, NULL, screen, NULL );
+        SDL_UpdateWindowSurface( window );
+      }
+      else{
+        interface(screen);//appel de l'interface du jeu
+        SDL_UpdateWindowSurface( window );
+      }
     }
   }
   quitter();
+  SDL_FreeSurface( menu ); // on supprime l'image du menu
   SDL_DestroyWindow( window );
   SDL_Quit();
   return 0;
