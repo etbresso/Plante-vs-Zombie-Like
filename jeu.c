@@ -6,7 +6,8 @@
 SDL_Surface* fond = NULL;
 SDL_Surface* bplante1 = NULL;
 
-void interface(SDL_Surface* screen){
+void interface(SDL_Surface* screen){ //crée l'interface du jeu
+
 	fond = SDL_LoadBMP( "images/fond.bmp" );
 	
 	bplante1 = SDL_LoadBMP("images/BPlante1.bmp");
@@ -14,10 +15,9 @@ void interface(SDL_Surface* screen){
 	
 	SDL_BlitSurface( fond, NULL, screen, NULL );
     SDL_BlitSurface( bplante1, NULL, screen, &dest );
-	
 }
 
-void quitter(){
+void quitter(){ //ferme les images appelées dans interface
 	SDL_FreeSurface( bplante1 );
 	SDL_FreeSurface( fond );
 }
@@ -25,3 +25,4 @@ void quitter(){
 void jouer(){
 	 SDL_Log("Juste un test qui tourne en boucle");
 }
+
