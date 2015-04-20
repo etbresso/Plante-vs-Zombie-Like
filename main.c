@@ -45,27 +45,35 @@ int main( int argc, char* args[] )
         if ( event.type == SDL_QUIT) { 
           running = 0;
         }
+        else if (event.type == SDL_MOUSEBUTTONDOWN){ // Souris
+          if (event.button.button == SDL_BUTTON_LEFT){ //Quand on appuis sur clic gauche
+            int x = event.motion.x; //recuperation coordonée souris
+            int y = event.motion.y;
+
+            sourisJeu(&x,&y);
+          }
+        }
         else if (event.type == SDL_KEYDOWN){
           if (event.key.keysym.sym == SDLK_ESCAPE ){ 
             running = 0;
           }
           else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){ //Enter pour lancer le jeu (temporaire, objectif bouton)
             SDL_Log("Lancement du niveau");
-            jouer(); //appel la fonction jouer dans jeu.c
+            principalJeu(); //appel la fonction principalJeu dans jeu.c
           }
         }
       }
-      if (appelJeu() == 0){ // si jouer n'est pas lancé
+      if (appelJeu() == 0){ // si principalJeu n'est pas lancé
         SDL_BlitSurface( menu, NULL, screen, NULL );
         SDL_UpdateWindowSurface( window );
       }
       else{
-        interface(screen);//appel de l'interface du jeu
+        interfaceJeu(screen);//appel de l'interface du jeu
         SDL_UpdateWindowSurface( window );
       }
     }
   }
-  quitter();
+  quitterJeu();
   SDL_FreeSurface( menu ); // on supprime l'image du menu
   SDL_DestroyWindow( window );
   SDL_Quit();
