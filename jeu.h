@@ -1,9 +1,10 @@
 #ifndef Jeu_H
 #define Jeu_H
 
-void interface(SDL_Surface* screen);
+void interfaceJeu(SDL_Surface* screen);
 int appelJeu();
-void quitter();
-void jouer();
+void quitterJeu();
+void sourisJeu(int *x,int *y);
+void principalJeu();
 
 #endif
