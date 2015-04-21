@@ -59,6 +59,7 @@ int main( int argc, char* args[] )
           }
           else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){ //Enter pour lancer le jeu (temporaire, objectif bouton)
             SDL_Log("Lancement du niveau");
+            interfaceJeu();//appel de l'interface du jeu
             principalJeu(); //appel la fonction principalJeu dans jeu.c
           }
         }
@@ -68,7 +69,7 @@ int main( int argc, char* args[] )
         SDL_UpdateWindowSurface( window );
       }
       else{
-        interfaceJeu(screen);//appel de l'interface du jeu
+        actualisationJeu(screen);//appel de l'actualisation des position de l'interface du jeu
         SDL_UpdateWindowSurface( window );
       }
     }
