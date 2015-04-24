@@ -24,6 +24,11 @@ int running = 1;
 /* to put the loaded menu */
 SDL_Surface* menu = NULL;
 
+//boutons
+SDL_Surface* bjouer = NULL;
+SDL_Surface* bcredit = NULL;
+SDL_Surface* bquiter = NULL;
+
 int main( int argc, char* args[] )
 {
   if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
@@ -38,7 +43,11 @@ int main( int argc, char* args[] )
       SDL_WINDOW_SHOWN);
 
     screen = SDL_GetWindowSurface( window );
+    //Chargement image
     menu = SDL_LoadBMP( "images/menu.bmp" );
+    bjouer = SDL_LoadBMP( "images/Jouer.bmp" );
+    bcredit = SDL_LoadBMP( "images/Crédit.bmp" );
+    bquiter = SDL_LoadBMP( "images/Quiter.bmp" );
 
     while( running ) {
       while( SDL_PollEvent( &event ) != 0 ) {
@@ -50,7 +59,13 @@ int main( int argc, char* args[] )
             int x = event.motion.x; //recuperation coordonée souris
             int y = event.motion.y;
 
-            sourisJeu(&x,&y);
+            if (appelJeu()==0){
+              
+            }
+
+            if (appelJeu() == 1){
+              sourisJeu(&x,&y);
+            }
           }
         }
         else if (event.type == SDL_KEYDOWN){
