@@ -27,7 +27,17 @@ SDL_Surface* menu = NULL;
 //boutons
 SDL_Surface* bjouer = NULL;
 SDL_Surface* bcredit = NULL;
-SDL_Surface* bquiter = NULL;
+SDL_Surface* bquitter = NULL;
+
+//dim bjouer
+int wBjouer = NULL;//dimention de l'image en x
+int hBjouer = NULL;//dimention de l'image en y
+//dim bcredit
+int wBcredit = NULL;//dimention de l'image en x
+int hBcredit = NULL;//dimention de l'image en y
+//dim bquitter
+int wBquitter = NULL;//dimention de l'image en x
+int hBquitter = NULL;//dimention de l'image en y
 
 int main( int argc, char* args[] )
 {
@@ -45,9 +55,19 @@ int main( int argc, char* args[] )
     screen = SDL_GetWindowSurface( window );
     //Chargement image
     menu = SDL_LoadBMP( "images/menu.bmp" );
+
     bjouer = SDL_LoadBMP( "images/Jouer.bmp" );
+    wBjouer = 1280/2 - bjouer->w/2;
+    hBjouer = 720/2 - bjouer->h/2;
+
     bcredit = SDL_LoadBMP( "images/Crédit.bmp" );
-    bquiter = SDL_LoadBMP( "images/Quiter.bmp" );
+    wBcredit = 1280/2 - bcredit->w/2;
+    hBcredit = 720/2 - bcredit->h/2 + 120;
+
+    bquitter = SDL_LoadBMP( "images/Quitter.bmp" );
+    wBquitter = 1280/2 - bquitter->w/2;
+    hBquitter = 720/2 - bquitter->h/2 + 240;
+
 
     while( running ) {
       while( SDL_PollEvent( &event ) != 0 ) {
@@ -59,28 +79,43 @@ int main( int argc, char* args[] )
             int x = event.motion.x; //recuperation coordonée souris
             int y = event.motion.y;
 
-            if (appelJeu()==0){
-              
+            if (appelJeu()==0){ //si on est dans le menu
+              if (x>wBjouer && x<wBjouer+250 && y>hBjouer && y<hBjouer+100){
+                interfaceJeu();//appel de l'interface du jeu
+                principalJeu(); //appel la fonction principalJeu dans jeu.c
+              }
+              if (x>wBcredit && x<wBcredit+250 && y>hBcredit && y<hBcredit+100){
+                SDL_Log("Lancement des crédits");
+              }
+              if (x>wBquitter && x<wBquitter+250 && y>hBquitter && y<hBquitter+100){
+                running = 0;
+              }
             }
 
-            if (appelJeu() == 1){
+            else if (appelJeu() == 1){ //si on a lancé la partie jeu
               sourisJeu(&x,&y);
             }
           }
         }
-        else if (event.type == SDL_KEYDOWN){
-          if (event.key.keysym.sym == SDLK_ESCAPE ){ 
+        else if (event.type == SDL_KEYDOWN){ //clavier
+          if (event.key.keysym.sym == SDLK_ESCAPE ){  //on peut toujours quitter avec echap
             running = 0;
-          }
-          else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER){ //Enter pour lancer le jeu (temporaire, objectif bouton)
-            SDL_Log("Lancement du niveau");
-            interfaceJeu();//appel de l'interface du jeu
-            principalJeu(); //appel la fonction principalJeu dans jeu.c
           }
         }
       }
       if (appelJeu() == 0){ // si principalJeu n'est pas lancé
-        SDL_BlitSurface( menu, NULL, screen, NULL );
+        SDL_BlitSurface( menu, NULL, screen, NULL ); //fond
+        
+        //Postion Bouton
+        SDL_Rect dimBjouer = { wBjouer,hBjouer, 0, 0}; //Position du bouton jouer
+        SDL_BlitSurface( bjouer, NULL, screen, &dimBjouer );//actualisation de la postion du Bouton jouer
+
+        SDL_Rect dimBcredit = { wBcredit,hBcredit, 0, 0}; //Position du bouton jouer
+        SDL_BlitSurface( bcredit, NULL, screen, &dimBcredit );//actualisation de la postion du Bouton jouer
+
+        SDL_Rect dimBquitter = { wBquitter,hBquitter, 0, 0}; //Position du bouton jouer
+        SDL_BlitSurface( bquitter, NULL, screen, &dimBquitter );//actualisation de la postion du Bouton jouer
+
         SDL_UpdateWindowSurface( window );
       }
       else{
@@ -89,6 +124,7 @@ int main( int argc, char* args[] )
       }
     }
   }
+  SDL_Log("Merci d'avoir joué !!!");
   quitterJeu();
   SDL_FreeSurface( menu ); // on supprime l'image du menu
   SDL_DestroyWindow( window );
