@@ -58,6 +58,9 @@ void interfaceJeu(){ //crée l'interface du jeu
 	wBplante3 = 128/2 - bplante3->w/2;
 	hBplante3 = 144/2 - bplante3->h/2 + 288;
 
+	balle = SDL_LoadBMP("images/rouge.bmp");
+	SDL_Rect  rouge = { 144/2 - balle->w/2-8,128/2 - balle->h/2, 0, 0};	
+
 }
 
 void actualisationJeu(SDL_Surface* screen){//actualise les positions
