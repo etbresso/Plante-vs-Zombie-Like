@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "jeu.h"
+#include "plantes.h"
 
 int appel = 0; // permet de savoir si on appel principalJeu();
 
@@ -10,7 +11,11 @@ SDL_Surface* bplante1 = NULL;
 SDL_Surface* bplante2 = NULL;
 SDL_Surface* bplante3 = NULL;
 
-SDL_Surface* plante[5][9]; //damier du jeu qui contindra les image des plantes
+//SDL_Surface* balle = NULL;
+
+//SDL_Surface* plante[5][9]; //damier du jeu qui contindra les image des plantes
+
+Plante *plante[5][9];
 
 //dim Bplante1
 int wBplante1 = NULL;//dimention de l'image en x
@@ -58,8 +63,8 @@ void interfaceJeu(){ //crée l'interface du jeu
 	wBplante3 = 128/2 - bplante3->w/2;
 	hBplante3 = 144/2 - bplante3->h/2 + 288;
 
-	balle = SDL_LoadBMP("images/rouge.bmp");
-	SDL_Rect  rouge = { 144/2 - balle->w/2-8,128/2 - balle->h/2, 0, 0};	
+	/*balle = SDL_LoadBMP("images/rouge.bmp");
+	SDL_Rect  rouge = { 144/2 - balle->w/2-8,128/2 - balle->h/2, 0, 0};	*/
 
 }
 
@@ -89,8 +94,8 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 
 	for(i=0; i<5;i++){
 		for (j=0;j<9;j++){
-		SDL_Rect dimplante00 = { (j+1)*128,i*144, 0, 0}; //Position  de la plante00
-		SDL_BlitSurface( plante[i][j], NULL, screen, &dimplante00 );//actualisation de la postion de la plante00
+		SDL_Rect dimplante = { (j+1)*128,i*144, 0, 0}; //Position  de la plante
+		SDL_BlitSurface( plante[i][j], NULL, screen, &dimplante );//actualisation de la postion de la plante
 		}
 	}
 
@@ -200,6 +205,16 @@ void quitterJeu(){ //ferme les images appelées dans interface
 	SDL_FreeSurface( bplante1 );
 	SDL_FreeSurface( bplante2 );
 	SDL_FreeSurface( bplante3 );
+
+	int i = 0;
+	int j = 0;
+
+	for (i=0; i<5; i++){
+		for (j=0; j<5; j++){
+			SDL_FreeSurface(plante[i][j]);
+		}
+	}
+
 	SDL_FreeSurface( fond );
 }
 
