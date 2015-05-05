@@ -39,6 +39,8 @@ int hBcredit = NULL;//dimention de l'image en y
 int wBquitter = NULL;//dimention de l'image en x
 int hBquitter = NULL;//dimention de l'image en y
 
+
+
 int main( int argc, char* args[] )
 {
   if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
@@ -81,7 +83,12 @@ int main( int argc, char* args[] )
 
             if (appelJeu()==0){ //si on est dans le menu
               if (x>wBjouer && x<wBjouer+250 && y>hBjouer && y<hBjouer+100){
-                SDL_FreeSurface( menu ); // on supprime l'image du menu
+                    SDL_FreeSurface( menu ); // on supprime l'image du menu
+                    SDL_FreeSurface( bjouer ); 
+                    SDL_FreeSurface( bcredit ); 
+                    SDL_FreeSurface( bquitter ); 
+                    SDL_FreeSurface( screen ); 
+
                 interfaceJeu();//appel de l'interface du jeu
                 principalJeu(); //appel la fonction principalJeu dans jeu.c
               }
@@ -125,8 +132,11 @@ int main( int argc, char* args[] )
       }
     }
   }
+
+  SDL_Log("Merci d'avoir joué !!!");
+
+  //a simplifier + voir surface jeu a supprimer tout le temps ou pas!
   if (appelJeu() == 0){
-    SDL_Log("Merci d'avoir joué !!!");
     SDL_FreeSurface( menu ); // on supprime l'image du menu
     SDL_FreeSurface( bjouer ); 
     SDL_FreeSurface( bcredit ); 
@@ -137,10 +147,11 @@ int main( int argc, char* args[] )
     return 0;
   }
   else{
-    SDL_Log("Merci d'avoir joué !!!");
     quitterJeu();
     SDL_DestroyWindow( window );
     SDL_Quit();
     return 0;
   }
 }
+
+
