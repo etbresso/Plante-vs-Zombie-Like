@@ -11,11 +11,11 @@ SDL_Surface* bplante1 = NULL;
 SDL_Surface* bplante2 = NULL;
 SDL_Surface* bplante3 = NULL;
 
-//SDL_Surface* balle = NULL;
+SDL_Surface* balle = NULL;
 
-//SDL_Surface* plante[5][9]; //damier du jeu qui contindra les image des plantes
+SDL_Surface* plante[5][9]; //damier du jeu qui contindra les image des plantes
 
-Plante *plante[5][9];
+//Plante *plante[5][9];
 
 //dim Bplante1
 int wBplante1 = NULL;//dimention de l'image en x
@@ -63,8 +63,7 @@ void interfaceJeu(){ //crée l'interface du jeu
 	wBplante3 = 128/2 - bplante3->w/2;
 	hBplante3 = 144/2 - bplante3->h/2 + 288;
 
-	/*balle = SDL_LoadBMP("images/rouge.bmp");
-	SDL_Rect  rouge = { 144/2 - balle->w/2-8,128/2 - balle->h/2, 0, 0};	*/
+	balle = SDL_LoadBMP("images/rouge.bmp");
 
 }
 
@@ -82,13 +81,10 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	SDL_Rect dimBplante3 = { wBplante3,hBplante3, 0, 0}; //Position du bouton de la plante3
 	SDL_BlitSurface( bplante3, NULL, screen, &dimBplante3 );//actualisation de la postion du Bouton de la plante3
 
-	//Position Plante
-	// de plante[0][0] à plante[0][8]
-	
-	/*SDL_Rect dimplante00 = { 128,0, 0, 0}; //Position  de la plante00
-	SDL_BlitSurface( plante[0][0], NULL, screen, &dimplante00 );//actualisation de la postion de la plante00
-	dimplante00.x=256;*/
-	
+	//balle
+	SDL_Rect rouge = { 144/2 - balle->w/2-8,128/2 - balle->h/2, 0, 0};	
+	SDL_BlitSurface( balle, NULL, screen, &rouge );
+
 	int i;
 	int j;
 
@@ -99,102 +95,6 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 		}
 	}
 
-	/*SDL_Rect dimplante01 = { 256,0, 0, 0}; 
-	SDL_BlitSurface( plante[0][1], NULL, screen, &dimplante00 );
-	SDL_Rect dimplante02 = { 384,0, 0, 0}; 
-	SDL_BlitSurface( plante[0][2], NULL, screen, &dimplante02 );
-	SDL_Rect dimplante03 = { 512,0, 0, 0}; 
-	SDL_BlitSurface( plante[0][3], NULL, screen, &dimplante03 );
-	SDL_Rect dimplante04 = { 640,0, 0, 0}; 
-	SDL_BlitSurface( plante[0][4], NULL, screen, &dimplante04 );
-	SDL_Rect dimplante05 = { 768,0, 0, 0}; 
-	SDL_BlitSurface( plante[0][5], NULL, screen, &dimplante05 );
-	SDL_Rect dimplante06 = { 896,0, 0, 0}; 
-	SDL_BlitSurface( plante[0][6], NULL, screen, &dimplante06 );
-	SDL_Rect dimplante07 = { 1024,0, 0, 0}; 
-	SDL_BlitSurface( plante[0][7], NULL, screen, &dimplante07 );
-	SDL_Rect dimplante08 = { 1152,0, 0, 0}; 
-	SDL_BlitSurface( plante[0][8], NULL, screen, &dimplante08 );
-
-	// de plante[1][0] à plante[1][8]
-	SDL_Rect dimplante10 = { 128,144, 0, 0}; //Position  de la plante00
-	SDL_BlitSurface( plante[1][0], NULL, screen, &dimplante10 );//actualisation de la postion de la plante00
-	SDL_Rect dimplante11 = { 256,144, 0, 0}; 
-	SDL_BlitSurface( plante[1][1], NULL, screen, &dimplante11 );
-	SDL_Rect dimplante12 = { 384,144, 0, 0}; 
-	SDL_BlitSurface( plante[1][2], NULL, screen, &dimplante12 );
-	SDL_Rect dimplante13 = { 512,144, 0, 0}; 
-	SDL_BlitSurface( plante[1][3], NULL, screen, &dimplante13 );
-	SDL_Rect dimplante14 = { 640,144, 0, 0}; 
-	SDL_BlitSurface( plante[1][4], NULL, screen, &dimplante14 );
-	SDL_Rect dimplante15 = { 768,144, 0, 0}; 
-	SDL_BlitSurface( plante[1][5], NULL, screen, &dimplante15 );
-	SDL_Rect dimplante16 = { 896,144, 0, 0}; 
-	SDL_BlitSurface( plante[1][6], NULL, screen, &dimplante16 );
-	SDL_Rect dimplante17 = { 1024,144, 0, 0}; 
-	SDL_BlitSurface( plante[1][7], NULL, screen, &dimplante17 );
-	SDL_Rect dimplante18 = { 1152,144, 0, 0}; 
-	SDL_BlitSurface( plante[1][8], NULL, screen, &dimplante18 );
-
-	// de plante[2][0] à plante[2][8]
-	SDL_Rect dimplante20 = { 128,288, 0, 0}; //Position  de la plante00
-	SDL_BlitSurface( plante[2][0], NULL, screen, &dimplante20 );//actualisation de la postion de la plante00
-	SDL_Rect dimplante21 = { 256,288, 0, 0}; 
-	SDL_BlitSurface( plante[2][1], NULL, screen, &dimplante21 );
-	SDL_Rect dimplante22 = { 384,288, 0, 0}; 
-	SDL_BlitSurface( plante[2][2], NULL, screen, &dimplante22 );
-	SDL_Rect dimplante23 = { 512,288, 0, 0}; 
-	SDL_BlitSurface( plante[2][3], NULL, screen, &dimplante23 );
-	SDL_Rect dimplante24 = { 640,288, 0, 0}; 
-	SDL_BlitSurface( plante[2][4], NULL, screen, &dimplante24 );
-	SDL_Rect dimplante25 = { 768,288, 0, 0}; 
-	SDL_BlitSurface( plante[2][5], NULL, screen, &dimplante25 );
-	SDL_Rect dimplante26 = { 896,288, 0, 0}; 
-	SDL_BlitSurface( plante[2][6], NULL, screen, &dimplante26 );
-	SDL_Rect dimplante27 = { 1024,288, 0, 0}; 
-	SDL_BlitSurface( plante[2][7], NULL, screen, &dimplante27 );
-	SDL_Rect dimplante28 = { 1152,288, 0, 0}; 
-	SDL_BlitSurface( plante[2][8], NULL, screen, &dimplante28 );
-
-	// de plante[3][0] à plante[3][8]
-	SDL_Rect dimplante30 = { 128,432, 0, 0}; //Position  de la plante00
-	SDL_BlitSurface( plante[3][0], NULL, screen, &dimplante30 );//actualisation de la postion de la plante00
-	SDL_Rect dimplante31 = { 256,432, 0, 0}; 
-	SDL_BlitSurface( plante[3][1], NULL, screen, &dimplante31 );
-	SDL_Rect dimplante32 = { 384,432, 0, 0}; 
-	SDL_BlitSurface( plante[3][2], NULL, screen, &dimplante32 );
-	SDL_Rect dimplante33 = { 512,432, 0, 0}; 
-	SDL_BlitSurface( plante[3][3], NULL, screen, &dimplante33 );
-	SDL_Rect dimplante34 = { 640,432, 0, 0}; 
-	SDL_BlitSurface( plante[3][4], NULL, screen, &dimplante34 );
-	SDL_Rect dimplante35 = { 768,432, 0, 0}; 
-	SDL_BlitSurface( plante[3][5], NULL, screen, &dimplante35 );
-	SDL_Rect dimplante36 = { 896,432, 0, 0}; 
-	SDL_BlitSurface( plante[3][6], NULL, screen, &dimplante36 );
-	SDL_Rect dimplante37 = { 1024,432, 0, 0}; 
-	SDL_BlitSurface( plante[3][7], NULL, screen, &dimplante37 );
-	SDL_Rect dimplante38 = { 1152,432, 0, 0}; 
-	SDL_BlitSurface( plante[3][8], NULL, screen, &dimplante38 );
-
-	// de plante[4][0] à plante[4][8]
-	SDL_Rect dimplante40 = { 128,576, 0, 0}; //Position  de la plante00
-	SDL_BlitSurface( plante[4][0], NULL, screen, &dimplante40 );//actualisation de la postion de la plante00
-	SDL_Rect dimplante41 = { 256,576, 0, 0}; 
-	SDL_BlitSurface( plante[4][1], NULL, screen, &dimplante41 );
-	SDL_Rect dimplante42 = { 384,576, 0, 0}; 
-	SDL_BlitSurface( plante[4][2], NULL, screen, &dimplante42 );
-	SDL_Rect dimplante43 = { 512,576, 0, 0}; 
-	SDL_BlitSurface( plante[4][3], NULL, screen, &dimplante43 );
-	SDL_Rect dimplante44 = { 640,576, 0, 0}; 
-	SDL_BlitSurface( plante[4][4], NULL, screen, &dimplante44 );
-	SDL_Rect dimplante45 = { 768,576, 0, 0}; 
-	SDL_BlitSurface( plante[4][5], NULL, screen, &dimplante45 );
-	SDL_Rect dimplante46 = { 896,576, 0, 0}; 
-	SDL_BlitSurface( plante[4][6], NULL, screen, &dimplante46 );
-	SDL_Rect dimplante47 = { 1024,576, 0, 0}; 
-	SDL_BlitSurface( plante[4][7], NULL, screen, &dimplante47 );
-	SDL_Rect dimplante48 = { 1152,576, 0, 0}; 
-	SDL_BlitSurface( plante[4][8], NULL, screen, &dimplante48 );*/
 }
 
 int appelJeu(){
