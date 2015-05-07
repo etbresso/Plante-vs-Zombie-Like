@@ -33,14 +33,14 @@ res->nom=nom;
 res->type=type;
 return res;
 }
-/*
+
 void Plante_destruct(Plante *p){
 free(p);
 }
 
 void envoyerBalle(){
 Balle *b;
-res=0;
+res->0;
 res->pos_bx;
 }
 
@@ -61,8 +61,10 @@ void affichage(Plante *p){
  printf("%c(%d,%d,%d,%c)",p->type,p->posx,p->posy,p->vie_plante,p->nom);
 }
 void envoieSoleil(){
+Plante *p;
+if(p.type==soleil){
 SDL_Surface* fond = NULL;
 soleil = SDL_LoadBMP("images/soleil.bmp");
 SDL_Rect  rouge = { 144/2 - soleil->w/2-8,128/2 - soleil->h/2, 0, 0};
 } 
-
+}
