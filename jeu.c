@@ -13,9 +13,9 @@ SDL_Surface* bplante3 = NULL;
 
 SDL_Surface* balle = NULL;
 
-SDL_Surface* plante[5][9]; //damier du jeu qui contindra les image des plantes
+//SDL_Surface* plante[5][9]; //damier du jeu qui contindra les image des plantes
 
-//Plante *plante[5][9];
+struct Plante tabPlante[5][9];
 
 //dim Bplante1
 int wBplante1 = NULL;//dimention de l'image en x
@@ -38,7 +38,7 @@ void principalJeu(){
 	//on initialise le tableau avec que des 0±
 	for (i=0; i<5; i++){
 		for (j=0; j<5; j++){
-			plante[i][j]=NULL;
+			tabPlante[i][j].imagePlante=NULL;
 		}
 	}
 
@@ -91,7 +91,7 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	for(i=0; i<5;i++){
 		for (j=0;j<9;j++){
 		SDL_Rect dimplante = { (j+1)*128,i*144, 0, 0}; //Position  de la plante
-		SDL_BlitSurface( plante[i][j], NULL, screen, &dimplante );//actualisation de la postion de la plante
+		SDL_BlitSurface( tabPlante[i][j].imagePlante, NULL, screen, &dimplante );//actualisation de la postion de la plante
 		}
 	}
 
@@ -111,7 +111,7 @@ void quitterJeu(){ //ferme les images appelées dans interface
 
 	for (i=0; i<5; i++){
 		for (j=0; j<5; j++){
-			SDL_FreeSurface(plante[i][j]);
+			SDL_FreeSurface(tabPlante[i][j].imagePlante);
 		}
 	}
 
@@ -164,159 +164,159 @@ void sourisJeu(int x,int y){
 	//clic sur une zone de jeu
 
 	// de plante[0][0] à plante[0][8]
-	if(x>128 && x<256 && y>0 && y<144 && plante[0][0] == NULL){
+	if(x>128 && x<256 && y>0 && y<144 && tabPlante[0][0].imagePlante == NULL){
 		posePlante(0,0);
 	}
-	else if(x>256 && x<384 && y>0 && y<144 && plante[0][1] == NULL){
+	else if(x>256 && x<384 && y>0 && y<144 && tabPlante[0][1].imagePlante == NULL){
 		posePlante(0,1);
 	}
-	else if(x>384 && x<512 && y>0 && y<144 && plante[0][2] == NULL){
+	else if(x>384 && x<512 && y>0 && y<144 && tabPlante[0][2].imagePlante == NULL){
 		posePlante(0,2);
 	}
-	else if(x>512 && x<640 && y>0 && y<144 && plante[0][3] == NULL){
+	else if(x>512 && x<640 && y>0 && y<144 && tabPlante[0][3].imagePlante == NULL){
 		posePlante(0,3);
 	}
-	else if(x>640 && x<768 && y>0 && y<144 && plante[0][4] == NULL){
+	else if(x>640 && x<768 && y>0 && y<144 && tabPlante[0][4].imagePlante == NULL){
 		posePlante(0,4);
 	}
-	else if(x>768 && x<896 && y>0 && y<144 && plante[0][5] == NULL){
+	else if(x>768 && x<896 && y>0 && y<144 && tabPlante[0][5].imagePlante == NULL){
 		posePlante(0,5);
 	}
-	else if(x>896 && x<1024 && y>0 && y<144 && plante[0][6] == NULL){
+	else if(x>896 && x<1024 && y>0 && y<144 && tabPlante[0][6].imagePlante == NULL){
 		posePlante(0,6);
 	}
-	else if(x>1024 && x<1152 && y>0 && y<144 && plante[0][7] == NULL){
+	else if(x>1024 && x<1152 && y>0 && y<144 && tabPlante[0][7].imagePlante == NULL){
 		posePlante(0,7);
 	}
-	else if(x>1152 && x<1280 && y>0 && y<144 && plante[0][8] == NULL){
+	else if(x>1152 && x<1280 && y>0 && y<144 && tabPlante[0][8].imagePlante == NULL){
 		posePlante(0,8);
 	}
 
 	// de plante[1][0] à plante[1][8]
-	if(x>128 && x<256 && y>144 && y<288 && plante[1][0] == NULL){
+	if(x>128 && x<256 && y>144 && y<288 && tabPlante[1][0].imagePlante == NULL){
 		posePlante(1,0);
 	}
-	else if(x>256 && x<384 && y>144 && y<288 && plante[1][1] == NULL){
+	else if(x>256 && x<384 && y>144 && y<288 && tabPlante[1][1].imagePlante == NULL){
 		posePlante(1,1);
 	}
-	else if(x>384 && x<512 && y>144 && y<288 && plante[1][2] == NULL){
+	else if(x>384 && x<512 && y>144 && y<288 && tabPlante[1][2].imagePlante == NULL){
 		posePlante(1,2);
 	}
-	else if(x>512 && x<640 && y>144 && y<288 && plante[1][3] == NULL){
+	else if(x>512 && x<640 && y>144 && y<288 && tabPlante[1][3].imagePlante == NULL){
 		posePlante(1,3);
 	}
-	else if(x>640 && x<768 && y>144 && y<288 && plante[1][4] == NULL){
+	else if(x>640 && x<768 && y>144 && y<288 && tabPlante[1][4].imagePlante == NULL){
 		posePlante(1,4);
 	}
-	else if(x>768 && x<896 && y>144 && y<288 && plante[1][5] == NULL){
+	else if(x>768 && x<896 && y>144 && y<288 && tabPlante[1][5].imagePlante == NULL){
 		posePlante(1,5);
 	}
-	else if(x>896 && x<1024 && y>144 && y<288 && plante[1][6] == NULL){
+	else if(x>896 && x<1024 && y>144 && y<288 && tabPlante[1][6].imagePlante == NULL){
 		posePlante(1,6);
 	}
-	else if(x>1024 && x<1152 && y>144 && y<288 && plante[1][7] == NULL){
+	else if(x>1024 && x<1152 && y>144 && y<288 && tabPlante[1][7].imagePlante == NULL){
 		posePlante(1,7);
 	}
-	else if(x>1152 && x<1280 && y>144 && y<288 && plante[1][8] == NULL){
+	else if(x>1152 && x<1280 && y>144 && y<288 && tabPlante[1][8].imagePlante == NULL){
 		posePlante(1,8);
 	}
 
 	// de plante[2][0] à plante[2][8]
-	else if(x>128 && x<256 && y>288 && y<432 && plante[2][0] == NULL){
+	else if(x>128 && x<256 && y>288 && y<432 && tabPlante[2][0].imagePlante == NULL){
 		posePlante(2,0);
 	}
-	else if(x>256 && x<384 && y>288 && y<432 && plante[2][1] == NULL){
+	else if(x>256 && x<384 && y>288 && y<432 && tabPlante[2][1].imagePlante == NULL){
 		posePlante(2,1);
 	}
-	else if(x>384 && x<512 && y>288 && y<432 && plante[2][2] == NULL){
+	else if(x>384 && x<512 && y>288 && y<432 && tabPlante[2][2].imagePlante == NULL){
 		posePlante(2,2);
 	}
-	else if(x>512 && x<640 && y>288 && y<432 && plante[2][3] == NULL){
+	else if(x>512 && x<640 && y>288 && y<432 && tabPlante[2][3].imagePlante == NULL){
 		posePlante(2,3);
 	}
-	else if(x>640 && x<768 && y>288 && y<432 && plante[2][4] == NULL){
+	else if(x>640 && x<768 && y>288 && y<432 && tabPlante[2][4].imagePlante == NULL){
 		posePlante(2,4);
 	}
-	else if(x>768 && x<896 && y>288 && y<432 && plante[2][5] == NULL){
+	else if(x>768 && x<896 && y>288 && y<432 && tabPlante[2][5].imagePlante == NULL){
 		posePlante(2,5);
 	}
-	else if(x>896 && x<1024 && y>288 && y<432 && plante[2][6] == NULL){
+	else if(x>896 && x<1024 && y>288 && y<432 && tabPlante[2][6].imagePlante == NULL){
 		posePlante(2,6);
 	}
-	else if(x>1024 && x<1152 && y>288 && y<432 && plante[2][7] == NULL){
+	else if(x>1024 && x<1152 && y>288 && y<432 && tabPlante[2][7].imagePlante == NULL){
 		posePlante(2,7);
 	}
-	else if(x>1152 && x<1280 && y>288 && y<432 && plante[2][8] == NULL){
+	else if(x>1152 && x<1280 && y>288 && y<432 && tabPlante[2][8].imagePlante == NULL){
 		posePlante(2,8);
 	}
 
 	// de plante[3][0] à plante[3][8]
-	else if(x>128 && x<256 && y>432 && y<576 && plante[3][0] == NULL){
+	else if(x>128 && x<256 && y>432 && y<576 && tabPlante[3][0].imagePlante == NULL){
 		posePlante(3,0);
 	}
-	else if(x>256 && x<384 && y>432 && y<576 && plante[3][1] == NULL){
+	else if(x>256 && x<384 && y>432 && y<576 && tabPlante[3][1].imagePlante == NULL){
 		posePlante(3,1);
 	}
-	else if(x>384 && x<512 && y>432 && y<576 && plante[3][2] == NULL){
+	else if(x>384 && x<512 && y>432 && y<576 && tabPlante[3][2].imagePlante == NULL){
 		posePlante(3,2);
 	}
-	else if(x>512 && x<640 && y>432 && y<576 && plante[3][3] == NULL){
+	else if(x>512 && x<640 && y>432 && y<576 && tabPlante[3][3].imagePlante == NULL){
 		posePlante(3,3);
 	}
-	else if(x>640 && x<768 && y>432 && y<576 && plante[3][4] == NULL){
+	else if(x>640 && x<768 && y>432 && y<576 && tabPlante[3][4].imagePlante == NULL){
 		posePlante(3,4);
 	}
-	else if(x>768 && x<896 && y>432 && y<576 && plante[3][5] == NULL){
+	else if(x>768 && x<896 && y>432 && y<576 && tabPlante[3][5].imagePlante == NULL){
 		posePlante(3,5);
 	}
-	else if(x>896 && x<1024 && y>432 && y<576 && plante[3][6] == NULL){
+	else if(x>896 && x<1024 && y>432 && y<576 && tabPlante[3][6].imagePlante == NULL){
 		posePlante(3,6);
 	}
-	else if(x>1024 && x<1152 && y>432 && y<576 && plante[3][7] == NULL){
+	else if(x>1024 && x<1152 && y>432 && y<576 && tabPlante[3][7].imagePlante == NULL){
 		posePlante(3,7);
 	}
-	else if(x>1152 && x<1280 && y>432 && y<576 && plante[3][8] == NULL){
+	else if(x>1152 && x<1280 && y>432 && y<576 && tabPlante[3][8].imagePlante == NULL){
 		posePlante(3,8);
 	}
 
 	// de plante[4][0] à plante[4][8]
-	else if(x>128 && x<256 && y>576 && y<720 && plante[4][0] == NULL){
+	else if(x>128 && x<256 && y>576 && y<720 && tabPlante[4][0].imagePlante == NULL){
 		posePlante(4,0);
 	}
-	else if(x>256 && x<384 && y>576 && y<720 && plante[4][1] == NULL){
+	else if(x>256 && x<384 && y>576 && y<720 && tabPlante[4][1].imagePlante == NULL){
 		posePlante(4,1);
 	}
-	else if(x>384 && x<512 && y>576 && y<720 && plante[4][2] == NULL){
+	else if(x>384 && x<512 && y>576 && y<720 && tabPlante[4][2].imagePlante == NULL){
 		posePlante(4,2);
 	}
-	else if(x>512 && x<640 && y>576 && y<720 && plante[4][3] == NULL){
+	else if(x>512 && x<640 && y>576 && y<720 && tabPlante[4][3].imagePlante == NULL){
 		posePlante(4,3);
 	}
-	else if(x>640 && x<768 && y>576 && y<720 && plante[4][4] == NULL){
+	else if(x>640 && x<768 && y>576 && y<720 && tabPlante[4][4].imagePlante == NULL){
 		posePlante(4,4);
 	}
-	else if(x>768 && x<896 && y>576 && y<720 && plante[4][5] == NULL){
+	else if(x>768 && x<896 && y>576 && y<720 && tabPlante[4][5].imagePlante == NULL){
 		posePlante(4,5);
 	}
-	else if(x>896 && x<1024 && y>576 && y<720 && plante[4][6] == NULL){
+	else if(x>896 && x<1024 && y>576 && y<720 && tabPlante[4][6].imagePlante == NULL){
 		posePlante(4,6);
 	}
-	else if(x>1024 && x<1152 && y>576 && y<720 && plante[4][7] == NULL){
+	else if(x>1024 && x<1152 && y>576 && y<720 && tabPlante[4][7].imagePlante == NULL){
 		posePlante(4,7);
 	}
-	else if(x>1152 && x<1280 && y>576 && y<720 && plante[4][8] == NULL){
+	else if(x>1152 && x<1280 && y>576 && y<720 && tabPlante[4][8].imagePlante == NULL){
 		posePlante(4,8);
 	}
 }
 
 void posePlante(int i, int j){
 	if (utilise == 1){
-		plante[i][j]= SDL_LoadBMP("images/Plante1.bmp"); //on charge l'image a mettre
+		tabPlante[i][j].imagePlante = SDL_LoadBMP("images/Plante1.bmp"); //on charge l'image a mettre
 	}
 	else if (utilise == 2){
-		plante[i][j] = SDL_LoadBMP("images/Plante2.bmp"); //on charge l'image a mettre
+		tabPlante[i][j].imagePlante = SDL_LoadBMP("images/Plante2.bmp"); //on charge l'image a mettre
 	}
 	else if (utilise == 3){
-		plante[i][j] = SDL_LoadBMP("images/Plante3.bmp"); //on charge l'image a mettre
+		tabPlante[i][j].imagePlante = SDL_LoadBMP("images/Plante3.bmp"); //on charge l'image a mettre
 	}
 }

@@ -1,23 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "plantes.h"
+#include <SDL2/SDL.h>
 
-
-typedef struct Plante Plante;
-struct Plante{
-	int posx;
-	int posy;
-	int vie_plante;
-	char* nom;
-	char* type;
-	SDL_Surface* imagePlante;
-};
 
 typedef struct Balle Balle;
 struct Balle{
 	int pos_bx;
 	int pos_by;
 };
+
 Balle* Balle_construct(int pos_bx ,int pos_by){
 	Balle *res=malloc(sizeof(Balle));
 	res->pos_bx=pos_bx;
@@ -67,4 +59,4 @@ void envoieSoleil(){
 	soleil = SDL_LoadBMP("images/soleil.bmp");
 	SDL_Rect  rouge = { 144/2 - soleil->w/2-8,128/2 - soleil->h/2, 0, 0};
 } 
-
+*/
