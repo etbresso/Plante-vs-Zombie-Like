@@ -7,7 +7,7 @@ test: plantes.o main.o jeu.o
 plantes.o: plantes.c plantes.h
 	gcc -o plantes.o -c plantes.c -Wall -lSDL2
 
-jeu.o: jeu.c plantes.h
+jeu.o: jeu.c plantes.h main.h
 	gcc -o jeu.o -c jeu.c -Wall -lSDL2
 
 main.o: main.c jeu.h

@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
+#include "main.h"
 #include "jeu.h"
 
 /* Window resolution */
@@ -72,8 +73,7 @@ void quitterMenu(){
   SDL_FreeSurface( bquitter ); 
 }
 
-int main( int argc, char* args[] )
-{
+int main( int argc, char* args[] ){
   if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
     printf( "SDL2 could not initialize! SDL2_Error: %s\n", SDL_GetError() );
   } else {
