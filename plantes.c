@@ -27,21 +27,17 @@ Plante* Plante_construct(int posx ,int posy,int vie_plante, char* nom, char* typ
 	res->imagePlante = NULL;
 	return res;
 }
-
-void Plante_destruct(Plante *p){
+/*void Plante_destruct(Plante *p){
 	free(p);
 }
 
 void envoyerBalle(){
-<<<<<<< HEAD
 Balle *b;
 res->0;
 res->pos_bx;
-=======
 	Balle *b;
 	res=0;
 	res->pos_bx;
->>>>>>> b4e21285b7a576a31bed6f5d5427c60f584749d3
 }
 
 }
@@ -61,7 +57,6 @@ void affichage(Plante *p){
 	printf("%c(%d,%d,%d,%c)",p->type,p->posx,p->posy,p->vie_plante,p->nom);
 }
 void envoieSoleil(){
-<<<<<<< HEAD
 Plante *p;
 if(p.type==soleil){
 SDL_Surface* fond = NULL;
@@ -69,10 +64,7 @@ soleil = SDL_LoadBMP("images/soleil.bmp");
 SDL_Rect  rouge = { 144/2 - soleil->w/2-8,128/2 - soleil->h/2, 0, 0};
 } 
 }
-=======
 	SDL_Surface* fond = NULL;
 	soleil = SDL_LoadBMP("images/soleil.bmp");
 	SDL_Rect  rouge = { 144/2 - soleil->w/2-8,128/2 - soleil->h/2, 0, 0};
-} 
-*/
->>>>>>> b4e21285b7a576a31bed6f5d5427c60f584749d3
+} */
