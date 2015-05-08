@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include "jeu.h"
 #include "plantes.h"
+#include "main.h"
 
 int appel = 0; // permet de savoir si on appel principalJeu();
 
@@ -10,6 +11,7 @@ SDL_Surface* fond = NULL;
 SDL_Surface* bplante1 = NULL;
 SDL_Surface* bplante2 = NULL;
 SDL_Surface* bplante3 = NULL;
+SDL_Surface* bMenuJeu = NULL;
 
 SDL_Surface* balle = NULL;
 
@@ -26,6 +28,9 @@ int hBplante2 = NULL;//dimention de l'image en y
 //dim Bplante3
 int wBplante3 = NULL;//dimention de l'image en x
 int hBplante3 = NULL;//dimention de l'image en y
+//dim bMenuJeu
+int wBMenuJeu = NULL;//dimention de l'image en x
+int hBMenuJeu = NULL;//dimention de l'image en y
 
 int utilise = 0; //permet de savoir si on a cliqué sur le bouton d'une plante
 
@@ -63,6 +68,10 @@ void interfaceJeu(){ //crée l'interface du jeu
 	wBplante3 = 128/2 - bplante3->w/2;
 	hBplante3 = 144/2 - bplante3->h/2 + 288;
 
+	bMenuJeu = SDL_LoadBMP("images/BMenuJeu.bmp");
+	wBMenuJeu = 128/2 - bMenuJeu->w/2;
+	hBMenuJeu = 144*3/4 - bMenuJeu->h/2 + 576;
+
 	balle = SDL_LoadBMP("images/rouge.bmp");
 
 }
@@ -80,6 +89,9 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 
 	SDL_Rect dimBplante3 = { wBplante3,hBplante3, 0, 0}; //Position du bouton de la plante3
 	SDL_BlitSurface( bplante3, NULL, screen, &dimBplante3 );//actualisation de la postion du Bouton de la plante3
+
+	SDL_Rect dimBMenuJeu = { wBMenuJeu,hBMenuJeu, 0, 0}; //Position du bouton de la plante3
+	SDL_BlitSurface( bMenuJeu, NULL, screen, &dimBMenuJeu );//actualisation de la postion du Bouton de la plante3
 
 	//balle
 	SDL_Rect rouge = { 144/2 - balle->w/2-8,128/2 - balle->h/2, 0, 0};	
@@ -105,6 +117,7 @@ void quitterJeu(){ //ferme les images appelées dans interface
 	SDL_FreeSurface( bplante1 );
 	SDL_FreeSurface( bplante2 );
 	SDL_FreeSurface( bplante3 );
+	SDL_FreeSurface( bMenuJeu );
 
 	int i = 0;
 	int j = 0;
@@ -160,6 +173,11 @@ void sourisJeu(int x,int y){
 			}
 		}
 
+	if (x>wBMenuJeu && x<wBMenuJeu+118 && y>hBMenuJeu && y<hBMenuJeu+71 ){
+			quitterJeu();
+			appel = 0;
+			interfaceMenu();
+		}
 
 	//clic sur une zone de jeu
 
