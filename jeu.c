@@ -1,12 +1,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "jeu.h"
 #include "plantes.h"
 #include "main.h"
 
 int appel = 0; // permet de savoir si on appel principalJeu();
 
+//le texte
+TTF_Font *police = NULL;
+int tmpArgent = 25;
+char argent[12];
+SDL_Surface* txt = NULL;
+
+//les surface
 SDL_Surface* fond = NULL;
 SDL_Surface* bplante1 = NULL;
 SDL_Surface* bplante2 = NULL;
@@ -74,6 +82,12 @@ void interfaceJeu(){ //crée l'interface du jeu
 
 	balle = SDL_LoadBMP("images/rouge.bmp");
 
+	TTF_Init();
+	police = TTF_OpenFont("AlphaWood.ttf", 36);
+	sprintf(argent, "Argent  %d", tmpArgent);
+	SDL_Color color = { 0, 0, 0 };
+ 	txt = TTF_RenderText_Solid(police, argent, color);
+
 }
 
 void actualisationJeu(SDL_Surface* screen){//actualise les positions
@@ -97,6 +111,14 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	SDL_Rect rouge = { 144/2 - balle->w/2-8,128/2 - balle->h/2, 0, 0};	
 	SDL_BlitSurface( balle, NULL, screen, &rouge );
 
+	//texte
+	/*SDL_FreeSurface(txt);
+	police = TTF_OpenFont("AlphaWood.ttf", 36);
+	sprintf(argent, "Argent  %d", tmpArgent);
+	SDL_Color color = { 0, 0, 0 };
+ 	txt = TTF_RenderText_Solid(police, argent, color);*/
+	SDL_BlitSurface( txt, NULL, screen, NULL );
+
 	int i;
 	int j;
 
@@ -118,6 +140,11 @@ void quitterJeu(){ //ferme les images appelées dans interface
 	SDL_FreeSurface( bplante2 );
 	SDL_FreeSurface( bplante3 );
 	SDL_FreeSurface( bMenuJeu );
+
+	TTF_CloseFont(police);
+    TTF_Quit();
+
+    SDL_FreeSurface(txt);
 
 	int i = 0;
 	int j = 0;

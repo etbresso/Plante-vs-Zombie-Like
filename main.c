@@ -8,7 +8,7 @@
 #define WINDOW_HEIGHT 720
 
 /* Window title */
-#define WINDOW_TITLE "Plante vs Zombie Like"
+#define WINDOW_TITLE "Flowers vs Zombies"
 
 /* The window */
 SDL_Window* window = NULL;
@@ -50,20 +50,20 @@ int dansCredit=0;
 
 void interfaceMenu(){
   screen = SDL_GetWindowSurface( window );
-    //Chargement image
-    menu = SDL_LoadBMP( "images/menu.bmp" );
+  //Chargement image
+  menu = SDL_LoadBMP( "images/menu.bmp" );
 
-    bjouer = SDL_LoadBMP( "images/Jouer.bmp" );
-    wBjouer = 1280/2 - bjouer->w/2;
-    hBjouer = 720/2 - bjouer->h/2;
+  bjouer = SDL_LoadBMP( "images/Jouer.bmp" );
+  wBjouer = 1280/2 - bjouer->w/2;
+  hBjouer = 720/2 - bjouer->h/2;
 
-    bcredit = SDL_LoadBMP( "images/Crédit.bmp" );
-    wBcredit = 1280/2 - bcredit->w/2;
-    hBcredit = 720/2 - bcredit->h/2 + 120;
+  bcredit = SDL_LoadBMP( "images/Crédit.bmp" );
+  wBcredit = 1280/2 - bcredit->w/2;
+  hBcredit = 720/2 - bcredit->h/2 + 120;
 
-    bquitter = SDL_LoadBMP( "images/Quitter.bmp" );
-    wBquitter = 1280/2 - bquitter->w/2;
-    hBquitter = 720/2 - bquitter->h/2 + 240;
+  bquitter = SDL_LoadBMP( "images/Quitter.bmp" );
+  wBquitter = 1280/2 - bquitter->w/2;
+  hBquitter = 720/2 - bquitter->h/2 + 240;
 }
 
 void quitterMenu(){
@@ -110,7 +110,7 @@ int main( int argc, char* args[] ){
                 dansCredit = 1;
                 credit = SDL_LoadBMP( "images/pageCredit.bmp" );
                 
-                bmenu = SDL_LoadBMP( "images/Quitter.bmp" );
+                bmenu = SDL_LoadBMP( "images/BMenuCredit.bmp" );
                 wBmenu = 1280/2 - bmenu->w/2;
                 hBmenu = 720/2 - bmenu->h/2 + 267;
 
@@ -188,5 +188,3 @@ int main( int argc, char* args[] ){
   SDL_Quit();
   return 0;
 }
-
-
