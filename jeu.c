@@ -10,9 +10,10 @@ int appel = 0; // permet de savoir si on appel principalJeu();
 
 //le texte
 TTF_Font *police = NULL;
-int tmpArgent = 25;
+int argentActuel = 25;
 char argent[12];
 SDL_Surface* txt = NULL;
+SDL_Color color = { 0, 0, 0 };
 
 //les surface
 SDL_Surface* fond = NULL;
@@ -83,9 +84,8 @@ void interfaceJeu(){ //crée l'interface du jeu
 	balle = SDL_LoadBMP("images/rouge.bmp");
 
 	TTF_Init();
-	police = TTF_OpenFont("AlphaWood.ttf", 36);
-	sprintf(argent, "Argent  %d", tmpArgent);
-	SDL_Color color = { 0, 0, 0 };
+	police = TTF_OpenFont("Iron&Brine.ttf", 36);
+	sprintf(argent, "Argent:  %d", argentActuel);
  	txt = TTF_RenderText_Solid(police, argent, color);
 
 }
@@ -112,11 +112,9 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	SDL_BlitSurface( balle, NULL, screen, &rouge );
 
 	//texte
-	/*SDL_FreeSurface(txt);
-	police = TTF_OpenFont("AlphaWood.ttf", 36);
-	sprintf(argent, "Argent  %d", tmpArgent);
-	SDL_Color color = { 0, 0, 0 };
- 	txt = TTF_RenderText_Solid(police, argent, color);*/
+	SDL_FreeSurface(txt);
+	sprintf(argent, "Argent  %d", argentActuel);
+ 	txt = TTF_RenderText_Solid(police, argent, color);
 	SDL_BlitSurface( txt, NULL, screen, NULL );
 
 	int i;
@@ -357,6 +355,7 @@ void sourisJeu(int x,int y){
 void posePlante(int i, int j){
 	if (utilise == 1){
 		tabPlante[i][j].imagePlante = SDL_LoadBMP("images/Plante1.bmp"); //on charge l'image a mettre
+		argentActuel = argentActuel+25;
 	}
 	else if (utilise == 2){
 		tabPlante[i][j].imagePlante = SDL_LoadBMP("images/Plante2.bmp"); //on charge l'image a mettre
