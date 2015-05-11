@@ -4,9 +4,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+<<<<<<< HEAD
 
 //voir avec zack a riz
 int nb_b=0;
+=======
+int total=0;
+//voir avec zack a riz
+>>>>>>> 5be34ebe4032e6cc036738a5dfd1e5d7d72910a3
 
 //zombie cool
 zombie* zombie_cool(int y){
@@ -262,6 +267,7 @@ void plante_kill(plante *p){
 free(p);
 }
 
+<<<<<<< HEAD
 void balle_kill(balle *p){
 free(p);
 }
@@ -362,6 +368,59 @@ void zombie_lose(zombie *p){
 	else
 		{printf("tu est encore en jeu !!");}
 }
+=======
+int get_vie(zombie p)
+{return p.vie_zombie;}
+
+int get_type(zombie p)
+{return p.type;}
+
+int get_x(zombie p)
+{return p.x;}
+
+
+//si l'on attaque plus de 10 fois un zombie, on risque de supprimer apres avoir supprime le zombie cette case mémoire qui est vide ou affecté a d'autres programmes !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+void zombie_attack(zombie* p)
+{
+if(get_vie(*p)> 0)
+{p->vie_zombie -= 1;}
+else if(get_vie(*p)==0){zombie_kill(p);}
+else{}
+}
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+void zombie_relou_detour(zombie *p)
+{if(get_type(*p) == 3)
+{p->pas += 1;}
+else{}}
+//
+//void zombie_relou_normale(zombie *p, plante *p2)
+//{if(p.x == (p2.x - 1))
+//{p->pas = 1;}
+//else{}}
+//
+//128 pixels pour un carré (ou rectangle pour les intimes)
+//void tuer_plante2(zombie *p, plante *p2)
+//{if(posx=x){p2->vie_plante -=1;}
+//}
+//
+void zombie_move(zombie* p)
+{p->x -= 1;}
+//
+void zombie_lose(zombie *p)
+{if(get_x(*p)==0 || get_x(*p)<0){printf("tu as perdu bolosse !!");}
+else{printf("tu est encore en jeu !!");}}
+>>>>>>> 5be34ebe4032e6cc036738a5dfd1e5d7d72910a3
 //
 //
 //
@@ -379,6 +438,7 @@ affichage_zombie(test);
 affichage_zombie(test2);
 affichage_zombieperch(test3);
 printf("***********************************************\n");
+<<<<<<< HEAD
 affichage_zombie(test);
 printf("******************test de la fonction attack qui enleve un point de vie a un zombie et qui sera réétulisé par la balle*****************************\n");
 zombie_attack(test);
@@ -426,6 +486,64 @@ balle *testb2=balle_dure(23,23);
 
 affichage_balle(testb);
 affichage_balle(testb2);
+=======
+printf("x=%d\n",test->x);
+printf("y=%d\n",test->y);
+printf("vie_zombie=%d\n",test->vie_zombie);
+printf("num=%d\n",test->num);
+printf("\n");
+printf("x=%d\n",test2->x);
+printf("y=%d\n",test2->y);
+printf("vie_zombie=%d\n",test2->vie_zombie);
+printf("num=%d\n",test2->num);
+printf("\n");
+printf("x=%d\n",test3->x);
+printf("y=%d\n",test3->y);
+printf("vie_zombie=%d\n",test3->vie_zombie);
+printf("num=%d\n",test3->num);
+printf("***********************************************\n");
+printf("x=%d\n",test->x);
+printf("y=%d\n",test->y);
+printf("vie_zombie=%d\n",test->vie_zombie);
+printf("num=%d\n",test->num);
+printf("***********************************************\n");
+printf("total=%d\n",total);
+printf("***********************************************\n");
+zombie_attack(test);
+zombie_attack(test);
+
+printf("x=%d\n",test->x);
+printf("y=%d\n",test->y);
+printf("vie_zombie=%d\n",test->vie_zombie);
+printf("num=%d\n",test->num);
+printf("***********************************************\n");
+zombie_move(test);
+
+printf("x=%d\n",test->x);
+printf("y=%d\n",test->y);
+printf("vie_zombie=%d\n",test->vie_zombie);
+printf("num=%d\n",test->num);
+printf("***********************************************\n");
+zombie_lose(test);
+
+printf("x=%d\n",test3->x);
+printf("y=%d\n",test3->y);
+printf("pas=%d\n",test3->pas);
+printf("vie_zombie=%d\n",test3->vie_zombie);
+printf("num=%d\n",test3->num);
+
+
+
+
+printf("*************test de la fonction changerdepas**********************************\n");
+zombie_relou_detour(test2);
+printf("x=%d\n",test3->x);
+printf("y=%d\n",test3->y);
+printf("pas=%d\n",test3->pas);
+printf("vie_zombie=%d\n",test3->vie_zombie);
+printf("num=%d\n",test3->num);
+
+>>>>>>> 5be34ebe4032e6cc036738a5dfd1e5d7d72910a3
 
 
 
