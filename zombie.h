@@ -99,7 +99,6 @@ void affichage_balle(balle *p);
 /* ******************************************* */
 
 void zombie_kill(zombie *p);
-<<<<<<< HEAD
 void plante_kill(plante *p);
 void balle_kill(balle *p);
 
@@ -122,14 +121,9 @@ void balle_move(balle* b);
 void zombie_lose(zombie *p);
 
 
-
-
-=======
 void zombie_attack(zombie* p);
 int get_vie(zombie p);
 int get_type(zombie p);
 void zombie_move(zombie* p);
 void zombie_lose(zombie *p);
->>>>>>> 5be34ebe4032e6cc036738a5dfd1e5d7d72910a3
-
 #endif

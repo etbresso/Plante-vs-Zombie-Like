@@ -4,14 +4,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-<<<<<<< HEAD
 
 //voir avec zack a riz
 int nb_b=0;
-=======
 int total=0;
 //voir avec zack a riz
->>>>>>> 5be34ebe4032e6cc036738a5dfd1e5d7d72910a3
 
 //zombie cool
 zombie* zombie_cool(int y){
@@ -120,7 +117,7 @@ return res3;
 //fonctions get *******************************
 
 //pour le zombie
-
+/*
 int get_vie_zombie(zombie p){
 return p.vie_zombie;
 }
@@ -203,7 +200,7 @@ int get_num_balle(balle p){
 return p.num_b;
 }
 
-//********affichages*********************************
+// affichages*********************************
 
 //pour les zombies
 
@@ -267,7 +264,6 @@ void plante_kill(plante *p){
 free(p);
 }
 
-<<<<<<< HEAD
 void balle_kill(balle *p){
 free(p);
 }
@@ -307,7 +303,7 @@ void zombie_attack(zombie* p){
 		{zombie_kill(p);}
 	else{}
 }
-
+/
 /*les plantes attaquent e produisant des balles si y a des zombies sur leur ligne, et ces balles attaquent lez zombies, puis une fois qu'elles touchent leur cible, disparaissent, envevant un pt de vie au zombie concerné et si ce zombie n'a plus de point de vie, il disparait aussi*/
 
 void plante_attack_normal(zombie* z,plante* p){
@@ -368,7 +364,6 @@ void zombie_lose(zombie *p){
 	else
 		{printf("tu est encore en jeu !!");}
 }
-=======
 int get_vie(zombie p)
 {return p.vie_zombie;}
 
@@ -420,10 +415,12 @@ void zombie_move(zombie* p)
 void zombie_lose(zombie *p)
 {if(get_x(*p)==0 || get_x(*p)<0){printf("tu as perdu bolosse !!");}
 else{printf("tu est encore en jeu !!");}}
->>>>>>> 5be34ebe4032e6cc036738a5dfd1e5d7d72910a3
+
 //
 //
 //
+
+/*
 int main(int argc, char *argv[])
 {
 
@@ -438,7 +435,6 @@ affichage_zombie(test);
 affichage_zombie(test2);
 affichage_zombieperch(test3);
 printf("***********************************************\n");
-<<<<<<< HEAD
 affichage_zombie(test);
 printf("******************test de la fonction attack qui enleve un point de vie a un zombie et qui sera réétulisé par la balle*****************************\n");
 zombie_attack(test);
@@ -486,7 +482,7 @@ balle *testb2=balle_dure(23,23);
 
 affichage_balle(testb);
 affichage_balle(testb2);
-=======
+
 printf("x=%d\n",test->x);
 printf("y=%d\n",test->y);
 printf("vie_zombie=%d\n",test->vie_zombie);
@@ -543,10 +539,10 @@ printf("pas=%d\n",test3->pas);
 printf("vie_zombie=%d\n",test3->vie_zombie);
 printf("num=%d\n",test3->num);
 
->>>>>>> 5be34ebe4032e6cc036738a5dfd1e5d7d72910a3
 
 
 
 
   return EXIT_SUCCESS;
 }
+*/
