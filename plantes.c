@@ -4,11 +4,7 @@
 #include <SDL2/SDL.h>
 #include "zombie.h"
 
-typedef struct Balle Balle;
-struct Balle{
-	int pos_bx;
-	int pos_by;
-};
+
 
 Balle* Balle_construct(int pos_bx ,int pos_by){
 	Balle *res=malloc(sizeof(Balle));
@@ -27,17 +23,15 @@ Plante* Plante_construct(int posx ,int posy,int vie_plante, char* nom, char* typ
 	res->imagePlante = NULL;
 	return res;
 }
-/*
+
 void Plante_destruct(Plante *p){
 	free(p);
 }
 
 void envoyerBalle(Balle *b){
-
-b->pos_bx=b->pos_bx+1;
-
-
+	
 }
+/*
 void tuerZombie(Plante *p, zombie *z){
 	while(z->posx_z!=p->posx && z->vie_zombie>0 && p->posy==z->posy_z){
 	envoyerBalle();
