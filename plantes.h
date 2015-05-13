@@ -6,6 +6,7 @@ typedef struct Balle Balle;
 struct Balle{
 	int pos_bx;
 	int pos_by;
+	SDL_Surface* imageBalle;
 };
 
 typedef struct Plante Plante;
@@ -20,11 +21,11 @@ struct Plante{
 
 Plante* Plante_construct(int posx,int posy, int vie_plante, char* nom, char* type);
 void Plante_destruct(Plante *p);
-//boolean etat_z();
-void envoyerBalle();
+
+
 void affichage(Plante *p);
-int getPosx();
 Balle* Balle_construct(int pos_bx ,int pos_by);
+//void tuerZombie(Plante *p, Zombie *z);
 
  
 #endif
