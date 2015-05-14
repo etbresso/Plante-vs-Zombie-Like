@@ -9,7 +9,7 @@ Balle* Balle_construct(int pos_bx ,int pos_by){
 	Balle *res=malloc(sizeof(Balle));
 	res->pos_bx=pos_bx;
 	res->pos_by=pos_by;
-	res->
+	res->imageBalle = NULL;
 	return res;
 }
 
