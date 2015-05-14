@@ -14,7 +14,7 @@ Uint32 vitesseZTimer = 0; //Timer
 
 //le texte
 TTF_Font *police = NULL;
-int argentActuel = 25;
+int argentActuel = NULL;
 char argent[12];
 SDL_Surface* txt = NULL;
 SDL_Color color = { 0, 0, 0 };
@@ -52,6 +52,7 @@ int utilise = 0; //permet de savoir si on a cliqué sur le bouton d'une plante
 void principalJeu(){
 	vitesseZTimer = SDL_GetTicks();
 	appel = 1;
+	argentActuel = 1000;
 	int i;
 	int j;
 
@@ -62,11 +63,11 @@ void principalJeu(){
 		}
 	}
 
-	zombies[0]=Zombie_base(0, 100);
-	zombies[1]=Zombie_base(144, 100);
-	zombies[2]=Zombie_base(2*144, 100);
-	zombies[3]=Zombie_base(3*144, 100);
-	zombies[4]=Zombie_base(4*144, 100);
+	zombies[0]=Zombie_base(0);
+	zombies[1]=Zombie_base(144);
+	zombies[2]=Zombie_base(2*144);
+	zombies[3]=Zombie_base(3*144);
+	zombies[4]=Zombie_base(4*144);
 
 }
 
@@ -199,7 +200,7 @@ void sourisJeu(int x,int y){
 
 	//clic sur les bouton
 	if (x>wBplante1 && x<wBplante1+118 && y>hBplante1 && y<hBplante1+71 ){
-		if (utilise == 0 || utilise == 2 || utilise == 3){
+		if (utilise !=1){
 			bplante1 = IMG_Load("images/BPlante1Selc.bmp");
 			bplante2 = IMG_Load("images/BPlante2.bmp");
 			bplante3 = IMG_Load("images/BPlante3.bmp");
@@ -212,7 +213,7 @@ void sourisJeu(int x,int y){
 	}
 
 	if (x>wBplante2 && x<wBplante2+118 && y>hBplante2 && y<hBplante2+71 ){
-		if (utilise == 0 || utilise == 1 || utilise == 3 ){
+		if (utilise !=2 ){
 			bplante1 = IMG_Load("images/plante1.png");
 			bplante2 = IMG_Load("images/BPlante2Selc.bmp");
 			bplante3 = IMG_Load("images/BPlante3.bmp");
@@ -225,7 +226,7 @@ void sourisJeu(int x,int y){
 	}
 
 	if (x>wBplante3 && x<wBplante3+118 && y>hBplante3 && y<hBplante3+71 ){
-			if (utilise == 0 || utilise == 1 || utilise == 2 ){
+			if (utilise !=3){
 				bplante1 = IMG_Load("images/plante1.png");
 				bplante2 = IMG_Load("images/BPlante2.bmp");
 				bplante3 = IMG_Load("images/BPlante3Selc.bmp");
@@ -240,6 +241,7 @@ void sourisJeu(int x,int y){
 	if (x>wBMenuJeu && x<wBMenuJeu+118 && y>hBMenuJeu && y<hBMenuJeu+71 ){
 			quitterJeu();
 			appel = 0;
+			utilise = 0;
 			interfaceMenu();
 	}
 
@@ -251,17 +253,19 @@ void sourisJeu(int x,int y){
 }
 
 void posePlante(int i, int j){
-	if (utilise == 1){
+	if (utilise == 1  && argentActuel >= 50){
 		tabPlante[i][j]=Plante_construct(i*144,j*128, 200, "nom", "type");
 		tabPlante[i][j]->imagePlante = IMG_Load("images/plante1.png"); //on charge l'image a mettre
-		
+		argentActuel = argentActuel - 50;
 	}
-	else if (utilise == 2){
+	else if (utilise == 2 && argentActuel >= 100){
 		tabPlante[i][j]=Plante_construct(i*144,j*128, 200, "nom", "type");
 		tabPlante[i][j]->imagePlante = IMG_Load("images/Plante2.bmp"); //on charge l'image a mettre
+		argentActuel = argentActuel - 100;
 	}
-	else if (utilise == 3){
+	else if (utilise == 3 && argentActuel >= 125){
 		tabPlante[i][j]=Plante_construct(i*144,j*128, 200, "nom", "type");
 		tabPlante[i][j]->imagePlante = IMG_Load("images/Plante3.bmp"); //on charge l'image a mettre
+		argentActuel = argentActuel - 125;
 	}
 }
