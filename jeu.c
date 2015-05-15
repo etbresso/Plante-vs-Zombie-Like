@@ -81,16 +81,16 @@ void interfaceJeu(){ //crée l'interface du jeu
 	hBplante1 = 144/2 - bplante1->h/2;
 
 	//Bouton plante2
-	bplante2 = IMG_Load("images/BPlante2.bmp");
+	bplante2 = IMG_Load("images/BPlante2.png");
 	wBplante2 = 128/2 - bplante2->w/2;
 	hBplante2 = 144/2 - bplante2->h/2 + 144;
 
 	//Bouton plante3
 	bplante3 = IMG_Load("images/BPlante3.bmp");
 	wBplante3 = 128/2 - bplante3->w/2;
-	hBplante3 = 144/2 - bplante3->h/2 + 288;
+	hBplante3 = 144/2 - bplante3->h/2 +288;
 
-	bMenuJeu = IMG_Load("images/BMenuJeu.bmp");
+	bMenuJeu = IMG_Load("images/BMenuJeu.png");
 	wBMenuJeu = 128/2 - bMenuJeu->w/2;
 	hBMenuJeu = 144*3/4 - bMenuJeu->h/2 + 576;
 
@@ -202,7 +202,7 @@ void sourisJeu(int x,int y){
 	if (x>wBplante1 && x<wBplante1+118 && y>hBplante1 && y<hBplante1+71 ){
 		if (utilise !=1){
 			bplante1 = IMG_Load("images/BPlante1Selc.bmp");
-			bplante2 = IMG_Load("images/BPlante2.bmp");
+			bplante2 = IMG_Load("images/BPlante2.png");
 			bplante3 = IMG_Load("images/BPlante3.bmp");
 			utilise = 1;
 		}
@@ -220,7 +220,7 @@ void sourisJeu(int x,int y){
 			utilise = 2;
 		}
 		else{
-			bplante2 = IMG_Load("images/BPlante2.bmp");
+			bplante2 = IMG_Load("images/BPlante2.png");
 			utilise = 0;
 		}
 	}
@@ -228,7 +228,7 @@ void sourisJeu(int x,int y){
 	if (x>wBplante3 && x<wBplante3+118 && y>hBplante3 && y<hBplante3+71 ){
 			if (utilise !=3){
 				bplante1 = IMG_Load("images/plante1.png");
-				bplante2 = IMG_Load("images/BPlante2.bmp");
+				bplante2 = IMG_Load("images/BPlante2.png");
 				bplante3 = IMG_Load("images/BPlante3Selc.bmp");
 				utilise = 3;
 			}
