@@ -8,7 +8,6 @@
 #include "zombie.h"
 #include "main.h"
 
-
 int appel = 0; // permet de savoir si on appel principalJeu();
 Uint32 vitesseZTimer = 0; //Timer
 
@@ -48,6 +47,7 @@ int hBMenuJeu = NULL;//dimention de l'image en y
 
 int utilise = 0; //permet de savoir si on a cliqué sur le bouton d'une plante
 
+int presence_zombie[] = {0,0,0,0,0}; //permet de savoir si il y a au moins un zombie sur la ligne i
 //------------------------------------------------------------------------------------
 void principalJeu(){
 	vitesseZTimer = SDL_GetTicks();
@@ -63,11 +63,11 @@ void principalJeu(){
 		}
 	}
 
-	zombies[0]=Zombie_base(0);
-	zombies[1]=Zombie_base(144);
-	zombies[2]=Zombie_base(2*144);
-	zombies[3]=Zombie_base(3*144);
-	zombies[4]=Zombie_base(4*144);
+	zombies[0]=Zombie_base(HAUTEUR_CASE);
+	zombies[1]=Zombie_base(HAUTEUR_CASE);
+	zombies[2]=Zombie_base(2*HAUTEUR_CASE);
+	zombies[3]=Zombie_base(3*HAUTEUR_CASE);
+	zombies[4]=Zombie_base(4*HAUTEUR_CASE);
 
 }
 
@@ -76,23 +76,23 @@ void interfaceJeu(){ //crée l'interface du jeu
 	fond = IMG_Load( "images/fond.bmp" );
 	
 	//Bouton plante1
-	bplante1 = IMG_Load("images/plante1.png");
-	wBplante1 = 128/2 - bplante1->w/2;
-	hBplante1 = 144/2 - bplante1->h/2;
+	bplante1 = IMG_Load("images/BPlante0.png");
+	wBplante1 = LARGEUR_CASE/2 - bplante1->w/2;
+	hBplante1 = HAUTEUR_CASE/2 - bplante1->h/2;
 
 	//Bouton plante2
-	bplante2 = IMG_Load("images/BPlante2.png");
-	wBplante2 = 128/2 - bplante2->w/2;
-	hBplante2 = 144/2 - bplante2->h/2 + 144;
+	bplante2 = IMG_Load("images/BPlante1.png");
+	wBplante2 = LARGEUR_CASE/2 - bplante2->w/2;
+	hBplante2 = HAUTEUR_CASE/2 - bplante2->h/2 + HAUTEUR_CASE;
 
 	//Bouton plante3
-	bplante3 = IMG_Load("images/BPlante3.bmp");
-	wBplante3 = 128/2 - bplante3->w/2;
-	hBplante3 = 144/2 - bplante3->h/2 +288;
+	bplante3 = IMG_Load("images/BPlante2.png");
+	wBplante3 = LARGEUR_CASE/2 - bplante3->w/2;
+	hBplante3 = HAUTEUR_CASE/2 - bplante3->h/2 +288;
 
 	bMenuJeu = IMG_Load("images/BMenuJeu.png");
-	wBMenuJeu = 128/2 - bMenuJeu->w/2;
-	hBMenuJeu = 144*3/4 - bMenuJeu->h/2 + 576;
+	wBMenuJeu = LARGEUR_CASE/2 - bMenuJeu->w/2;
+	hBMenuJeu = HAUTEUR_CASE*3/4 - bMenuJeu->h/2 + 576;
 
 	balle = IMG_Load("images/rouge.bmp");
 
@@ -102,6 +102,55 @@ void interfaceJeu(){ //crée l'interface du jeu
  	txt = TTF_RenderText_Solid(police, argent, color);
 
 }
+
+
+//charge la balle si necessaire et fait avancer celle déjà sur le terrain
+void plante_attaque(Plante *p){
+	chargerBalle(p);
+
+	int i;
+	for(i=0;i<5;i++){
+		if(zombies[i]!=NULL){
+
+			if (p->b1 != NULL){
+
+				if(degatBalle(zombies[i],p->b1) || (p->b1)->pos_bx>9*LARGEUR_CASE){
+					SDL_FreeSurface((p->b1)->imageBalle);
+					Balle_destruct(p->b1);
+					p->b1=NULL;
+				}
+			}
+			if (p->b2 != NULL){
+				if(degatBalle(zombies[i],p->b2)|| (p->b2)->pos_bx>9*LARGEUR_CASE){
+					SDL_FreeSurface((p->b2)->imageBalle);
+					Balle_destruct(p->b2);
+					p->b2=NULL;
+				}		
+			}
+		}
+
+	}	
+}
+
+void gererSoleil(Plante *p){
+	chargerSoleil(p);
+
+	if (p->b1!=NULL && p->dureeBalles>INTERVALLE_SOLEIL/3){
+		SDL_FreeSurface((p->b1)->imageBalle);
+		Balle_destruct(p->b1);
+		p->b1=NULL;
+		
+	}
+}
+
+//Remet à 0 toute les case du tableau
+void presenceZombieInit(){
+	int i;
+	for(i=0; i<5;i++){
+		presence_zombie[i]=0;
+	}
+}
+
 
 void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	//actualisation de la postion du fond
@@ -121,7 +170,7 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	SDL_BlitSurface( bMenuJeu, NULL, screen, &dimBMenuJeu );//actualisation de la postion du Bouton de la plante3
 
 	//balle
-	//SDL_Rect rouge = { 144/2 - balle->w/2-8,128/2 - balle->h/2, 0, 0};	
+	//SDL_Rect rouge = { HAUTEUR_CASE/2 - balle->w/2-8,LARGEUR_CASE/2 - balle->h/2, 0, 0};	
 	//SDL_BlitSurface( balle, NULL, screen, &rouge );
 
 	//texte
@@ -133,33 +182,87 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	int i;
 	int j;
 
+	//Boucle qui gère les zombies
+	for(i=0;i<5;i++){ 
+
+
+
+		if(zombies[i]!=NULL){ //si le zombie n'est pas mort
+
+			if (zombies[i]->pv<0){
+				SDL_FreeSurface(zombies[i]->img);
+				destructZombie(zombies[i]);
+				zombies[i]=NULL;
+			}else {
+				presence_zombie[zombies[i]->position_y/HAUTEUR_CASE]=1;
+
+				//Si il y a une plante attaquer, sinon avancer
+				if(tabPlante[zombies[i]->position_y/HAUTEUR_CASE][zombies[i]->position_x/LARGEUR_CASE-1]!=NULL && vitesseZTimer+100<SDL_GetTicks()) {
+
+					attaquerZ(tabPlante[zombies[i]->position_y/HAUTEUR_CASE][zombies[i]->position_x/LARGEUR_CASE-1]);
+
+				}else if(vitesseZTimer+100<SDL_GetTicks()){
+					avancerZ(zombies[i]);
+				}
+
+				SDL_Rect zombieTest = { zombies[i]->position_x,zombies[i]->position_y, 0, 0}; //Position  du zombie
+				SDL_BlitSurface( zombies[i]->img, NULL, screen, &zombieTest );//actualisation de la postion du zombie
+			}
+		}
+	}
+
+	//Boucle qui gère les plantes
 	for(i=0; i<5;i++){
 		for (j=0;j<9;j++){
-		SDL_Rect dimplante = { (j+1)*128,i*144, 0, 0}; //Position  de la plante
-		if (tabPlante[i][j]!=NULL){
-			SDL_BlitSurface( tabPlante[i][j]->imagePlante, NULL, screen, &dimplante );//actualisation de la postion de la plante
-		}
-		
-		}
-	}
+			Plante *tmp=tabPlante[i][j];
 
-	for(i=0;i<5;i++){ //dessine les zombies
-		if(zombies[i]!=NULL){ //si le zombie n'est pas mort
-			//printf("test1:%d\n test2:%d\n",zombies[i]->position_x/128,zombies[i]->position_y/144);
-			if(tabPlante[zombies[i]->position_y/144][zombies[i]->position_x/128-1]!=NULL && vitesseZTimer+100<SDL_GetTicks()) {
-				attaquerZ(tabPlante[zombies[i]->position_y/144][zombies[i]->position_x/128-1]);
-				if(tabPlante[zombies[i]->position_y/144][zombies[i]->position_x/128-1]->vie_plante<0){
-					SDL_FreeSurface( tabPlante[zombies[i]->position_y/144][zombies[i]->position_x/128-1]->imagePlante);
-					tabPlante[zombies[i]->position_y/144][zombies[i]->position_x/128-1]=NULL;
+			if(tmp != NULL){
+				//si la plante est morte on libère la mémoire sinon on attaque si necessaire et on la re-dessine
+				if(tmp->vie_plante<0){
+
+					SDL_FreeSurface(tmp->imagePlante);
+					Plante_destruct(tmp);
+							
+					tabPlante[i][j]=NULL;
+				}else {
+
+					tmp->dureeBalles+=1;
+					
+
+					//creation de soleil ou balle 
+					if (tmp->type==0){
+						gererSoleil(tmp);
+					}else {
+						envoyerBalle(tmp);
+
+						if(presence_zombie[i]==1){
+							plante_attaque(tmp);
+						}
+					}
+
+					SDL_Rect dimplante = { (j+1)*LARGEUR_CASE,i*HAUTEUR_CASE, 0, 0}; //Position  de la plante
+					SDL_BlitSurface( tmp->imagePlante, NULL, screen, &dimplante );//re-dessine
+
+					//Pour chaque plante on re-dessine les balle si il y en a
+					if (tmp->b1 != NULL){
+						SDL_Rect balle = { (tmp->b1)->pos_bx,(tmp->b1)->pos_by, 0, 0}; //Position  du zombie
+						SDL_BlitSurface( (tmp->b1)->imageBalle, NULL, screen, &balle );//actualisation de la postion du zombie
+					}
+					if (tmp->b2 != NULL){
+						SDL_Rect balle = { (tmp->b2)->pos_bx,(tmp->b2)->pos_by, 0, 0}; //Position  du zombie
+						SDL_BlitSurface( (tmp->b2)->imageBalle, NULL, screen, &balle );//actualisation de la postion du zombie
+					}
+
 				}
-			}else if(vitesseZTimer+100<SDL_GetTicks()){
-				avancerZ(zombies[i]);
-			}
-			SDL_Rect zombieTest = { zombies[i]->position_x,zombies[i]->position_y, 0, 0}; //Position  de la plante00
-			SDL_BlitSurface( zombies[i]->img, NULL, screen, &zombieTest );//actualisation de la postion de la plante00
-		}
 
+			}
+
+		}
 	}
+
+
+	presenceZombieInit();
+
 	if(vitesseZTimer+100<SDL_GetTicks()){
 		vitesseZTimer=SDL_GetTicks();
 	}	
@@ -202,38 +305,38 @@ void sourisJeu(int x,int y){
 	if (x>wBplante1 && x<wBplante1+118 && y>hBplante1 && y<hBplante1+71 ){
 		if (utilise !=1){
 			bplante1 = IMG_Load("images/BPlante1Selc.bmp");
-			bplante2 = IMG_Load("images/BPlante2.png");
-			bplante3 = IMG_Load("images/BPlante3.bmp");
+			bplante2 = IMG_Load("images/BPlante1.png");
+			bplante3 = IMG_Load("images/BPlante2.png");
 			utilise = 1;
 		}
 		else{
-			bplante1 = IMG_Load("images/plante1.png");
+			bplante1 = IMG_Load("images/BPlante0.png");
 			utilise = 0;
 		}
 	}
 
 	if (x>wBplante2 && x<wBplante2+118 && y>hBplante2 && y<hBplante2+71 ){
 		if (utilise !=2 ){
-			bplante1 = IMG_Load("images/plante1.png");
+			bplante1 = IMG_Load("images/BPlante0.png");
 			bplante2 = IMG_Load("images/BPlante2Selc.bmp");
-			bplante3 = IMG_Load("images/BPlante3.bmp");
+			bplante3 = IMG_Load("images/BPlante2.png");
 			utilise = 2;
 		}
 		else{
-			bplante2 = IMG_Load("images/BPlante2.png");
+			bplante2 = IMG_Load("images/BPlante1.png");
 			utilise = 0;
 		}
 	}
 
 	if (x>wBplante3 && x<wBplante3+118 && y>hBplante3 && y<hBplante3+71 ){
 			if (utilise !=3){
-				bplante1 = IMG_Load("images/plante1.png");
-				bplante2 = IMG_Load("images/BPlante2.png");
+				bplante1 = IMG_Load("images/BPlante0.png");
+				bplante2 = IMG_Load("images/BPlante1.png");
 				bplante3 = IMG_Load("images/BPlante3Selc.bmp");
 				utilise = 3;
 			}
 			else{
-				bplante3 = IMG_Load("images/BPlante3.bmp");
+				bplante3 = IMG_Load("images/BPlante2.png");
 				utilise = 0;
 			}
 	}
@@ -247,25 +350,27 @@ void sourisJeu(int x,int y){
 
 	//clic sur une zone de jeu
 	
-	if(y/144>=0 && x/128-1>=0 && tabPlante[y/144][x/128-1]==NULL){
-		posePlante(y/144,x/128-1);
+	if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]==NULL){
+		posePlante(y/HAUTEUR_CASE,x/LARGEUR_CASE-1);
 	}
 }
 
+
+
 void posePlante(int i, int j){
 	if (utilise == 1  && argentActuel >= 50){
-		tabPlante[i][j]=Plante_construct(i*144,j*128, 200, "nom", "type");
-		tabPlante[i][j]->imagePlante = IMG_Load("images/plante1.png"); //on charge l'image a mettre
+		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE,i*HAUTEUR_CASE, 200, "nom1", 0);
+		tabPlante[i][j]->imagePlante = IMG_Load("images/plante0.png"); //on charge l'image a mettre
 		argentActuel = argentActuel - 50;
 	}
 	else if (utilise == 2 && argentActuel >= 100){
-		tabPlante[i][j]=Plante_construct(i*144,j*128, 200, "nom", "type");
-		tabPlante[i][j]->imagePlante = IMG_Load("images/Plante2.bmp"); //on charge l'image a mettre
+		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 200, "nom2", 1);
+		tabPlante[i][j]->imagePlante = IMG_Load("images/plante1.png"); //on charge l'image a mettre
 		argentActuel = argentActuel - 100;
 	}
 	else if (utilise == 3 && argentActuel >= 125){
-		tabPlante[i][j]=Plante_construct(i*144,j*128, 200, "nom", "type");
-		tabPlante[i][j]->imagePlante = IMG_Load("images/Plante3.bmp"); //on charge l'image a mettre
+		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 200, "nom3", 2);
+		tabPlante[i][j]->imagePlante = IMG_Load("images/plante2.png"); //on charge l'image a mettre
 		argentActuel = argentActuel - 125;
 	}
 }

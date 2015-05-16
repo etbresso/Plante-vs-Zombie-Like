@@ -1,9 +1,9 @@
 
 #include "zombie.h"
-#include <SDL2/SDL.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 
@@ -15,8 +15,8 @@ Zombie* Zombie_base(int y){
 	Zombie *res=malloc(sizeof(Zombie));
 	res->position_x=19*64;
 	res->position_y=y;
-	res->pv=100;
-	res->img=IMG_Load("images/zombie_base1.png");
+	res->pv=15;
+	res->img=IMG_Load("images/zombie1.png");
 	return res;
 }
 
@@ -25,8 +25,8 @@ Zombie* zombie_cool(int y){
 	Zombie *res=malloc(sizeof(Zombie));
 	res->position_x=19*64;
 	res->position_y=y;
-	res->pv=75;
-	res->img=IMG_Load("images/zombie_base1.png");
+	res->pv=10;
+	res->img=IMG_Load("images/zombie1.png");
 	return res;
 }
 
@@ -35,8 +35,8 @@ Zombieperch* zombie_relou(int y){
 	Zombieperch *res=malloc(sizeof(Zombieperch));
 	res->position_x=19*64;
 	res->position_y=y;
-	res->pv=150;
-	res->img=IMG_Load("images/zombie_base1.png");
+	res->pv=15;
+	res->img=IMG_Load("images/zombie1.png");
 	res->attaque_util=0;
 	return res;
 }
@@ -64,9 +64,7 @@ void zombie_kill(Zombie *p){
 }
 
 void attaquerZ(Plante* p){
-	printf("pv:%d\n",p->vie_plante);
 	p->vie_plante-=1;
-	printf("pv:%d\n",p->vie_plante);
 }
 
 void plante_attack_zombieperch(Zombieperch* per,Plante* p){
@@ -76,9 +74,7 @@ void plante_attack_zombieperch(Zombieperch* per,Plante* p){
 		printf("saute");
 	}
 	else{
-		printf("pv:%d\n",p->vie_plante);
 		p->vie_plante-=1;
-		printf("pv:%d\n",p->vie_plante);
 	}
 
 }
@@ -86,12 +82,13 @@ void plante_attack_zombieperch(Zombieperch* per,Plante* p){
 void avancerZ(Zombie* z1){
 	z1->position_x=z1->position_x-1;
 }
+void destructZombie(Zombie *z){
+	free(z);
+}
 /*
-void zombie_lose(Zombie *p){
-	if(get_x_zombie(*p)==0){
-		printf("tu as perdu bolosse !!");
-	}else{
-		printf("tu est encore en jeu !!");
+void tesGameOver(Zombie *p){
+	if(get_x_zombie(*p)<=128){
+		printf("perdu !!");
 	}
 } 
 */

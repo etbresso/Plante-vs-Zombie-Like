@@ -1,29 +1,14 @@
 #ifndef zombie_h
 #define zombie_h
 #include <SDL2/SDL.h>
-#include "plantes.h"
+#include "jeu.h"
 
-typedef struct Zombie Zombie;
-struct Zombie{
-	int position_x;
-	int position_y;
-	int pv;
-	SDL_Surface* img;
-};
-
-typedef struct Zombieperch Zombieperch;
-struct Zombieperch{
-	int position_x;
-	int position_y;
-	int pv;
-	SDL_Surface* img;
-	int attaque_util;
-};
 
 
 Zombie* Zombie_base(int y);
 Zombie* Zombie_cool(int y);
 Zombieperch* zombie_relou(int y);
+void destructZombie(Zombie *z);
 void affichage_zombieperch(Zombieperch *p);
 void afficherZ(Zombie* z1);
 void zombie_kill(Zombie *p);
