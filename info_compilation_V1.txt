@@ -1,6 +1,0 @@
-Si vous voulez compiler le main.c (pour voir l'interface graphique il faut taper:
-gcc main.c jeu.c -o test -Wall -lSDL2
-
-
--lSDL2: appelle la librairie SDL2
-
