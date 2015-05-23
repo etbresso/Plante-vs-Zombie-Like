@@ -15,8 +15,12 @@ Uint32 vitesseZTimer = 0; //Timer
 TTF_Font *police = NULL;
 int argentActuel = NULL;
 char argent[12];
-SDL_Surface* txt = NULL;
+SDL_Surface* txtArgent = NULL;
 SDL_Color color = { 0, 0, 0 };
+
+int scoreActuel = NULL;
+char score[12];
+SDL_Surface* txtScore = NULL;
 
 //les surface
 SDL_Surface* fond = NULL;
@@ -53,6 +57,7 @@ void principalJeu(){
 	vitesseZTimer = SDL_GetTicks();
 	appel = 1;
 	argentActuel = 1000;
+	scoreActuel =0;
 	int i;
 	int j;
 
@@ -94,13 +99,16 @@ void interfaceJeu(){ //crée l'interface du jeu
 	wBMenuJeu = LARGEUR_CASE/2 - bMenuJeu->w/2;
 	hBMenuJeu = HAUTEUR_CASE*3/4 - bMenuJeu->h/2 + 576;
 
-	balle = IMG_Load("images/rouge.bmp");
+	
+
 
 	TTF_Init();
 	police = TTF_OpenFont("Iron&Brine.ttf", 36);
 	sprintf(argent, "Argent:  %d", argentActuel);
- 	txt = TTF_RenderText_Solid(police, argent, color);
+ 	txtArgent = TTF_RenderText_Solid(police, argent, color);
 
+ 	sprintf(argent, "Score  %d", scoreActuel);
+ 	txtScore = TTF_RenderText_Solid(police, score, color);
 }
 
 
@@ -174,10 +182,16 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	//SDL_BlitSurface( balle, NULL, screen, &rouge );
 
 	//texte
-	SDL_FreeSurface(txt);
+	SDL_FreeSurface(txtArgent);
 	sprintf(argent, "Argent  %d", argentActuel);
- 	txt = TTF_RenderText_Solid(police, argent, color);
-	SDL_BlitSurface( txt, NULL, screen, NULL );
+ 	txtArgent = TTF_RenderText_Solid(police, argent, color);
+	SDL_BlitSurface( txtArgent, NULL, screen, NULL );
+
+	SDL_FreeSurface(txtScore);
+	sprintf(score, "Score  %d", scoreActuel);
+ 	txtScore = TTF_RenderText_Solid(police, score, color);
+ 	SDL_Rect dimScore = { 1100, 0, 0, 0}; //Position du score
+	SDL_BlitSurface( txtScore, NULL, screen, &dimScore );
 
 	int i;
 	int j;
@@ -190,6 +204,7 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 		if(zombies[i]!=NULL){ //si le zombie n'est pas mort
 
 			if (zombies[i]->pv<0){
+				scoreActuel = scoreActuel + 1;
 				SDL_FreeSurface(zombies[i]->img);
 				destructZombie(zombies[i]);
 				zombies[i]=NULL;
@@ -283,7 +298,8 @@ void quitterJeu(){ //ferme les images appelées dans interface
 	TTF_CloseFont(police);
     TTF_Quit();
 
-    SDL_FreeSurface(txt);
+    SDL_FreeSurface(txtArgent);
+    SDL_FreeSurface(txtScore);
 
 	int i = 0;
 	int j = 0;
@@ -352,6 +368,14 @@ void sourisJeu(int x,int y){
 	
 	if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]==NULL){
 		posePlante(y/HAUTEUR_CASE,x/LARGEUR_CASE-1);
+	}
+
+	//clic sur un soleil
+	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->type == 0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL){
+		argentActuel = argentActuel + 25;
+		SDL_FreeSurface((tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1)->imageBalle);
+		Balle_destruct(tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1);
+		tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1=NULL;
 	}
 }
 
