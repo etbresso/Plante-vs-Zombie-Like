@@ -57,10 +57,10 @@ void Plante_destruct(Plante *p){
 void envoyerBalle(Plante *p){
 	
 	if(p->b1 != NULL){
-		(p->b1)->pos_bx+=1;
+		(p->b1)->pos_bx+=2;
 	}
 	if(p->b2 != NULL){
-		(p->b2)->pos_bx+=1;
+		(p->b2)->pos_bx+=2;
 	}
 }
 

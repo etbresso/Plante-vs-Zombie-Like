@@ -11,6 +11,7 @@
 
 
 
+
 int appel = 0; // permet de savoir si on appel principalJeu();
 Uint32 vitesseZTimer = 0; //Timer
 Uint32 timerApparition = 0; //permet de gérer l'apparition des vagues de zombie
@@ -66,7 +67,7 @@ void principalJeu(){
 	timerApparition = SDL_GetTicks();
 	srand(time(NULL));
 	appel = 1;
-	argentActuel = 750;
+	argentActuel = 75;
 	scoreActuel =0;
 	int i;
 	int j;
@@ -235,7 +236,12 @@ void nouveauZombie(){
 	//si le nombre de zombie max de la vague n'est pas défini on le fait
 	
 	if (nbZombieMax==0){
-		nbZombieMax=difficulte*(rand()%2+2);
+		if(difficulte<8){
+			nbZombieMax=difficulte*(rand()%2+2);
+		}else{
+			nbZombieMax=7*(rand()%2+2);
+		}
+		
 	}
 	//si l'intervalle de temps entre deux zombies est passé on crées le suivant
 	if (interval2Zombie+INTERVALLE_ZOMBIE<SDL_GetTicks()){
@@ -330,6 +336,7 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 			}
 		}
 	}
+
 
 	//Boucle qui gère les plantes
 	for(i=0; i<5;i++){

@@ -16,7 +16,7 @@ Zombie* Zombie_base(int y){
 	res->position_x=19*64;
 	res->position_y=y;
 	res->type=1;
-	res->pv=15;
+	res->pv=10;
 	res->pas=2;
 	res->img=IMG_Load("images/zombie1.png");
 	return res;
@@ -29,7 +29,7 @@ Zombie* Zombie_cool(int y){
 	res->position_y=y;
 	res->pas=2;
 	res->type=2;
-	res->pv=20;
+	res->pv=15;
 	res->img=IMG_Load("images/zombie2.png");
 	return res;
 }
@@ -40,7 +40,7 @@ Zombie* Zombie_relou(int y){
 	res->position_x=19*64;
 	res->position_y=y;
 	res->type=3;
-	res->pv=25;
+	res->pv=20;
 	res->pas=2;
 	res->img=IMG_Load("images/zombie3.png");
 	return res;
