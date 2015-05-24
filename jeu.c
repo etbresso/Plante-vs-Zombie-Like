@@ -15,7 +15,7 @@ int appel = 0; // permet de savoir si on appel principalJeu();
 Uint32 vitesseZTimer = 0; //Timer
 Uint32 timerApparition = 0; //permet de gérer l'apparition des vagues de zombie
 Uint32 interval2Zombie = 0;
-int difficulte = 1; //influe sur l'arrivée des zombies
+int difficulte = 2; //influe sur l'arrivée des zombies
 int nbZombie = 0; //nombre de zombie apparu au court d'une vague
 int nbZombieMax = 0; //nombre de zombie pour une vague donné
 
@@ -78,8 +78,8 @@ void principalJeu(){
 	timerApparition = SDL_GetTicks();
 	srand(time(NULL));
 	appel = 1;
-	argentActuel = 750;
-	scoreActuel =0;
+	argentActuel = 7500;
+	scoreActuel = 0;
 	int i;
 	int j;
 
@@ -281,6 +281,7 @@ void nouveauZombie(){
 
 
 void actualisationJeu(SDL_Surface* screen){//actualise les positions
+	int fini =0;
 	//actualisation de la postion du fond
 	SDL_BlitSurface( fond, NULL, screen, NULL );
 
@@ -354,10 +355,7 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 
 				//test si un zombie à passer la limite
 				if (zombies[i]->position_x<LARGEUR_CASE){
-					quitterJeu();
-					appel = 0;
-					utilise = 0;
-					interfaceMenu();
+					fini=1;
 				}
 
 				SDL_Rect zombieTest = { zombies[i]->position_x,zombies[i]->position_y, 0, 0}; //Position  du zombie
@@ -425,6 +423,13 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 		nouveauZombie();
 		
 	}
+
+	if(fini==1){
+		quitterJeu();
+		appel = 0;
+		utilise = 0;
+		interfaceMenu();
+	}
 			
 
 }
@@ -455,10 +460,19 @@ void quitterJeu(){ //ferme les images appelées dans interface
 		for (j=0; j<9; j++){
 			if(tabPlante[i][j]!=NULL){
 				SDL_FreeSurface(tabPlante[i][j]->imagePlante);
+				Plante_destruct(tabPlante[i][j]);
+				tabPlante[i][j]=NULL;
 			}
 		}
 	}
 
+	for(i=0;i<MAX_ZOMBIE;i++){ 
+		if(zombies[i]!=NULL){ //si le zombie n'est pas mort
+				SDL_FreeSurface(zombies[i]->img);
+				destructZombie(zombies[i]);
+				zombies[i]=NULL;
+		}
+	}	
 	SDL_FreeSurface( fond );
 }
 
