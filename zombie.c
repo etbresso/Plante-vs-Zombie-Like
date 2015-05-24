@@ -15,29 +15,34 @@ Zombie* Zombie_base(int y){
 	Zombie *res=malloc(sizeof(Zombie));
 	res->position_x=19*64;
 	res->position_y=y;
+	res->type=1;
 	res->pv=15;
+	res->pas=2;
 	res->img=IMG_Load("images/zombie1.png");
 	return res;
 }
 
 //zombie cool
-Zombie* zombie_cool(int y){
+Zombie* Zombie_cool(int y){
 	Zombie *res=malloc(sizeof(Zombie));
 	res->position_x=19*64;
 	res->position_y=y;
-	res->pv=10;
-	res->img=IMG_Load("images/zombie1.png");
+	res->pas=2;
+	res->type=2;
+	res->pv=20;
+	res->img=IMG_Load("images/zombie2.png");
 	return res;
 }
 
 //zombie relou
-Zombieperch* zombie_relou(int y){
-	Zombieperch *res=malloc(sizeof(Zombieperch));
+Zombie* Zombie_relou(int y){
+	Zombie *res=malloc(sizeof(Zombieperch));
 	res->position_x=19*64;
 	res->position_y=y;
-	res->pv=15;
-	res->img=IMG_Load("images/zombie1.png");
-	res->attaque_util=0;
+	res->type=3;
+	res->pv=25;
+	res->pas=2;
+	res->img=IMG_Load("images/zombie3.png");
 	return res;
 }
 
@@ -49,7 +54,7 @@ void afficherZ(Zombie* z1){
 }
 
 //pour les zombieperch
-
+/*
 void affichage_zombieperch(Zombieperch *p){
 	printf("Zombie p\n" );
 	printf("position x: %d\n",p->position_x );
@@ -57,16 +62,20 @@ void affichage_zombieperch(Zombieperch *p){
 	printf("pv: %d\n",p->pv );
 	printf("si-pouvoir-utilisé=%d\n",p->attaque_util);
 	printf("\n");
-}
+}*/
 
-void zombie_kill(Zombie *p){
-	free(p);
-}
 
-void attaquerZ(Plante* p){
-	p->vie_plante-=1;
+void attaquerZ(Plante* p, Zombie *z){
+	if(z->type==3){
+		z->position_x= p->posx-1;
+		z->type=2;
+		z->img=IMG_Load("images/zombie2.png");
+	}else{
+		p->vie_plante-=1;
+	}
+	
 }
-
+/*
 void plante_attack_zombieperch(Zombieperch* per,Plante* p){
 	if(per->attaque_util==0){
 		per->attaque_util=1;
@@ -77,10 +86,10 @@ void plante_attack_zombieperch(Zombieperch* per,Plante* p){
 		p->vie_plante-=1;
 	}
 
-}
+}*/
 
 void avancerZ(Zombie* z1){
-	z1->position_x=z1->position_x-1;
+	z1->position_x=z1->position_x-z1->pas;
 }
 void destructZombie(Zombie *z){
 	free(z);
