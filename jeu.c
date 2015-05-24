@@ -89,7 +89,7 @@ void principalJeu(){
 
 void interfaceJeu(){ //crée l'interface du jeu
 
-	fond = IMG_Load( "images/fond.bmp" );
+	fond = IMG_Load( "images/fond.png" );
 	
 	//Bouton plante1
 	bplante1 = IMG_Load("images/BPlante0.png");
