@@ -11,7 +11,6 @@
 
 
 
-
 int appel = 0; // permet de savoir si on appel principalJeu();
 Uint32 vitesseZTimer = 0; //Timer
 Uint32 timerApparition = 0; //permet de gérer l'apparition des vagues de zombie
@@ -24,8 +23,10 @@ int nbZombieMax = 0; //nombre de zombie pour une vague donné
 //le texte
 TTF_Font *police = NULL;
 int argentActuel = NULL;
-char argent[12];
+char argent[7];
+char nbArgent[4];
 SDL_Surface* txtArgent = NULL;
+SDL_Surface* txtNbArgent = NULL;
 SDL_Color color = { 0, 0, 0 };
 int scoreActuel = NULL;
 char score[12];
@@ -36,6 +37,8 @@ SDL_Surface* fond = NULL;
 SDL_Surface* bplante1 = NULL;
 SDL_Surface* bplante2 = NULL;
 SDL_Surface* bplante3 = NULL;
+SDL_Surface* bplante4 = NULL;
+
 SDL_Surface* bMenuJeu = NULL;
 
 SDL_Surface* balle = NULL;
@@ -54,6 +57,10 @@ int hBplante2 = NULL;//dimention de l'image en y
 //dim Bplante3
 int wBplante3 = NULL;//dimention de l'image en x
 int hBplante3 = NULL;//dimention de l'image en y
+//dim Bplante4
+int wBplante4 = NULL;//dimention de l'image en x
+int hBplante4 = NULL;//dimention de l'image en y
+
 //dim bMenuJeu
 int wBMenuJeu = NULL;//dimention de l'image en x
 int hBMenuJeu = NULL;//dimention de l'image en y
@@ -67,7 +74,7 @@ void principalJeu(){
 	timerApparition = SDL_GetTicks();
 	srand(time(NULL));
 	appel = 1;
-	argentActuel = 75;
+	argentActuel = 750;
 	scoreActuel =0;
 	int i;
 	int j;
@@ -105,19 +112,25 @@ void interfaceJeu(){ //crée l'interface du jeu
 	//Bouton plante3
 	bplante3 = IMG_Load("images/BPlante2.png");
 	wBplante3 = LARGEUR_CASE/2 - bplante3->w/2;
-	hBplante3 = HAUTEUR_CASE/2 - bplante3->h/2 +288;
+	hBplante3 = HAUTEUR_CASE/2 - bplante3->h/2 +HAUTEUR_CASE*2;
+
+	//Bouton plante4
+	bplante4 = IMG_Load("images/BPlante3.bmp");
+	wBplante4 = LARGEUR_CASE/2 - bplante4->w/2;
+	hBplante4 = HAUTEUR_CASE/2 - bplante4->h/2 +HAUTEUR_CASE*3;
 
 	bMenuJeu = IMG_Load("images/BMenuJeu.png");
 	wBMenuJeu = LARGEUR_CASE/2 - bMenuJeu->w/2;
 	hBMenuJeu = HAUTEUR_CASE*3/4 - bMenuJeu->h/2 + 576;
 
 	
-
-
 	TTF_Init();
 	police = TTF_OpenFont("Iron&Brine.ttf", 36);
-	sprintf(argent, "Argent:  %d", argentActuel);
+	sprintf(argent, "Argent:");
  	txtArgent = TTF_RenderText_Solid(police, argent, color);
+
+ 	sprintf(nbArgent, "%d", argentActuel);
+ 	txtNbArgent = TTF_RenderText_Solid(police, nbArgent, color);
 
  	sprintf(argent, "Score  %d", scoreActuel);
  	txtScore = TTF_RenderText_Solid(police, score, color);
@@ -236,12 +249,7 @@ void nouveauZombie(){
 	//si le nombre de zombie max de la vague n'est pas défini on le fait
 	
 	if (nbZombieMax==0){
-		if(difficulte<8){
-			nbZombieMax=difficulte*(rand()%2+2);
-		}else{
-			nbZombieMax=7*(rand()%2+2);
-		}
-		
+		nbZombieMax=difficulte*(rand()%2+2);
 	}
 	//si l'intervalle de temps entre deux zombies est passé on crées le suivant
 	if (interval2Zombie+INTERVALLE_ZOMBIE<SDL_GetTicks()){
@@ -277,6 +285,9 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	SDL_Rect dimBplante3 = { wBplante3,hBplante3, 0, 0}; //Position du bouton de la plante3
 	SDL_BlitSurface( bplante3, NULL, screen, &dimBplante3 );//actualisation de la postion du Bouton de la plante3
 
+	SDL_Rect dimBplante4 = { wBplante4,hBplante4, 0, 0}; //Position du bouton de la plante3
+	SDL_BlitSurface( bplante4, NULL, screen, &dimBplante4 );//actualisation de la postion du Bouton de la plante3
+
 	SDL_Rect dimBMenuJeu = { wBMenuJeu,hBMenuJeu, 0, 0}; //Position du bouton de la plante3
 	SDL_BlitSurface( bMenuJeu, NULL, screen, &dimBMenuJeu );//actualisation de la postion du Bouton de la plante3
 
@@ -286,9 +297,15 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 
 	//texte
 	SDL_FreeSurface(txtArgent);
-	sprintf(argent, "Argent  %d", argentActuel);
+	sprintf(argent, "Argent:");
  	txtArgent = TTF_RenderText_Solid(police, argent, color);
 	SDL_BlitSurface( txtArgent, NULL, screen, NULL );
+
+	SDL_FreeSurface(txtNbArgent);
+	sprintf(nbArgent, "%d", argentActuel);
+ 	txtNbArgent = TTF_RenderText_Solid(police, nbArgent, color);
+ 	SDL_Rect dimNbArgent = { 0, 30, 0, 0}; //Position du score
+	SDL_BlitSurface( txtNbArgent, NULL, screen, &dimNbArgent );
 
 	SDL_FreeSurface(txtScore);
 	sprintf(score, "Score  %d", scoreActuel);
@@ -336,7 +353,6 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 			}
 		}
 	}
-
 
 	//Boucle qui gère les plantes
 	for(i=0; i<5;i++){
@@ -409,12 +425,14 @@ void quitterJeu(){ //ferme les images appelées dans interface
 	SDL_FreeSurface( bplante1 );
 	SDL_FreeSurface( bplante2 );
 	SDL_FreeSurface( bplante3 );
+	SDL_FreeSurface( bplante4 );
 	SDL_FreeSurface( bMenuJeu );
 
 	TTF_CloseFont(police);
     TTF_Quit();
 
     SDL_FreeSurface(txtArgent);
+    SDL_FreeSurface(txtNbArgent);
     SDL_FreeSurface(txtScore);
 
 	int i = 0;
@@ -436,9 +454,10 @@ void sourisJeu(int x,int y){
 	//clic sur les bouton
 	if (x>wBplante1 && x<wBplante1+118 && y>hBplante1 && y<hBplante1+71 ){
 		if (utilise !=1){
-			bplante1 = IMG_Load("images/BPlante1Selc.png");
+			bplante1 = IMG_Load("images/BPlante0Selec.png");
 			bplante2 = IMG_Load("images/BPlante1.png");
 			bplante3 = IMG_Load("images/BPlante2.png");
+			bplante4 = IMG_Load("images/BPlante3.bmp");
 			utilise = 1;
 		}
 		else{
@@ -450,8 +469,9 @@ void sourisJeu(int x,int y){
 	if (x>wBplante2 && x<wBplante2+118 && y>hBplante2 && y<hBplante2+71 ){
 		if (utilise !=2 ){
 			bplante1 = IMG_Load("images/BPlante0.png");
-			bplante2 = IMG_Load("images/BPlante2Selc.png");
+			bplante2 = IMG_Load("images/BPlante1Selec.png");
 			bplante3 = IMG_Load("images/BPlante2.png");
+			bplante4 = IMG_Load("images/BPlante3.bmp");
 			utilise = 2;
 		}
 		else{
@@ -464,11 +484,26 @@ void sourisJeu(int x,int y){
 			if (utilise !=3){
 				bplante1 = IMG_Load("images/BPlante0.png");
 				bplante2 = IMG_Load("images/BPlante1.png");
-				bplante3 = IMG_Load("images/BPlante3Selc.bmp");
+				bplante3 = IMG_Load("images/BPlante2Selec.png");
+				bplante4 = IMG_Load("images/BPlante3.bmp");
 				utilise = 3;
 			}
 			else{
 				bplante3 = IMG_Load("images/BPlante2.png");
+				utilise = 0;
+			}
+	}
+
+	if (x>wBplante4 && x<wBplante4+118 && y>hBplante4 && y<hBplante4+71 ){
+			if (utilise !=4){
+				bplante1 = IMG_Load("images/BPlante0.png");
+				bplante2 = IMG_Load("images/BPlante1.png");
+				bplante3 = IMG_Load("images/BPlante2.png");
+				bplante4 = IMG_Load("images/BPlante3Selc.bmp");
+				utilise = 4;
+			}
+			else{
+				bplante4 = IMG_Load("images/BPlante3.bmp");
 				utilise = 0;
 			}
 	}
@@ -511,6 +546,11 @@ void posePlante(int i, int j){
 	else if (utilise == 3 && argentActuel >= 125){
 		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 200, "nom3", 2);
 		tabPlante[i][j]->imagePlante = IMG_Load("images/plante2.png"); //on charge l'image a mettre
+		argentActuel = argentActuel - 125;
+	}
+	else if (utilise == 4 && argentActuel >= 75){
+		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 200, "nom4", 2); //il faut modifier le titre
+		tabPlante[i][j]->imagePlante = IMG_Load("images/Plante3.png"); //on charge l'image a mettre
 		argentActuel = argentActuel - 125;
 	}
 }
