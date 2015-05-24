@@ -429,7 +429,7 @@ void sourisJeu(int x,int y){
 	//clic sur les bouton
 	if (x>wBplante1 && x<wBplante1+118 && y>hBplante1 && y<hBplante1+71 ){
 		if (utilise !=1){
-			bplante1 = IMG_Load("images/BPlante1Selc.bmp");
+			bplante1 = IMG_Load("images/BPlante1Selc.png");
 			bplante2 = IMG_Load("images/BPlante1.png");
 			bplante3 = IMG_Load("images/BPlante2.png");
 			utilise = 1;
