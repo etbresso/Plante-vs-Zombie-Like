@@ -334,7 +334,7 @@ void sourisJeu(int x,int y){
 	if (x>wBplante2 && x<wBplante2+118 && y>hBplante2 && y<hBplante2+71 ){
 		if (utilise !=2 ){
 			bplante1 = IMG_Load("images/BPlante0.png");
-			bplante2 = IMG_Load("images/BPlante2Selc.bmp");
+			bplante2 = IMG_Load("images/BPlante2Selc.png");
 			bplante3 = IMG_Load("images/BPlante2.png");
 			utilise = 2;
 		}
