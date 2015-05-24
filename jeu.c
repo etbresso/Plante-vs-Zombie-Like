@@ -38,6 +38,7 @@ SDL_Surface* bplante1 = NULL;
 SDL_Surface* bplante2 = NULL;
 SDL_Surface* bplante3 = NULL;
 SDL_Surface* bplante4 = NULL;
+SDL_Surface* bpelle = NULL;
 
 SDL_Surface* bMenuJeu = NULL;
 
@@ -60,6 +61,9 @@ int hBplante3 = NULL;//dimention de l'image en y
 //dim Bplante4
 int wBplante4 = NULL;//dimention de l'image en x
 int hBplante4 = NULL;//dimention de l'image en y
+//dim Bpelle
+int wBpelle = NULL;//dimention de l'image en x
+int hBpelle = NULL;//dimention de l'image en y
 
 //dim bMenuJeu
 int wBMenuJeu = NULL;//dimention de l'image en x
@@ -102,7 +106,7 @@ void interfaceJeu(){ //crée l'interface du jeu
 	//Bouton plante1
 	bplante1 = IMG_Load("images/BPlante0.png");
 	wBplante1 = LARGEUR_CASE/2 - bplante1->w/2;
-	hBplante1 = HAUTEUR_CASE/2 - bplante1->h/2;
+	hBplante1 = HAUTEUR_CASE/2 - bplante1->h/2+30;
 
 	//Bouton plante2
 	bplante2 = IMG_Load("images/BPlante1.png");
@@ -112,12 +116,17 @@ void interfaceJeu(){ //crée l'interface du jeu
 	//Bouton plante3
 	bplante3 = IMG_Load("images/BPlante2.png");
 	wBplante3 = LARGEUR_CASE/2 - bplante3->w/2;
-	hBplante3 = HAUTEUR_CASE/2 - bplante3->h/2 +HAUTEUR_CASE*2;
+	hBplante3 = HAUTEUR_CASE/2 - bplante3->h/2 +HAUTEUR_CASE+113;
 
 	//Bouton plante4
-	bplante4 = IMG_Load("images/BPlante3.bmp");
+	bplante4 = IMG_Load("images/BPlante3.png");
 	wBplante4 = LARGEUR_CASE/2 - bplante4->w/2;
-	hBplante4 = HAUTEUR_CASE/2 - bplante4->h/2 +HAUTEUR_CASE*3;
+	hBplante4 = HAUTEUR_CASE/2 - bplante4->h/2 +HAUTEUR_CASE+2*113;
+
+	//Bouton plante4
+	bpelle = IMG_Load("images/BPelle.png");
+	wBpelle = LARGEUR_CASE/2 - bpelle->w/2;
+	hBpelle = HAUTEUR_CASE/2 - bpelle->h/2 +HAUTEUR_CASE+3*113;
 
 	bMenuJeu = IMG_Load("images/BMenuJeu.png");
 	wBMenuJeu = LARGEUR_CASE/2 - bMenuJeu->w/2;
@@ -285,8 +294,11 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	SDL_Rect dimBplante3 = { wBplante3,hBplante3, 0, 0}; //Position du bouton de la plante3
 	SDL_BlitSurface( bplante3, NULL, screen, &dimBplante3 );//actualisation de la postion du Bouton de la plante3
 
-	SDL_Rect dimBplante4 = { wBplante4,hBplante4, 0, 0}; //Position du bouton de la plante3
-	SDL_BlitSurface( bplante4, NULL, screen, &dimBplante4 );//actualisation de la postion du Bouton de la plante3
+	SDL_Rect dimBplante4 = { wBplante4,hBplante4, 0, 0}; //Position du bouton de la plante4
+	SDL_BlitSurface( bplante4, NULL, screen, &dimBplante4 );//actualisation de la postion du Bouton de la plante4
+
+	SDL_Rect dimBpelle = { wBpelle,hBpelle, 0, 0}; //Position du bouton de la pelle
+	SDL_BlitSurface( bpelle, NULL, screen, &dimBpelle );//actualisation de la postion du Bouton de la pelle
 
 	SDL_Rect dimBMenuJeu = { wBMenuJeu,hBMenuJeu, 0, 0}; //Position du bouton de la plante3
 	SDL_BlitSurface( bMenuJeu, NULL, screen, &dimBMenuJeu );//actualisation de la postion du Bouton de la plante3
@@ -426,6 +438,7 @@ void quitterJeu(){ //ferme les images appelées dans interface
 	SDL_FreeSurface( bplante2 );
 	SDL_FreeSurface( bplante3 );
 	SDL_FreeSurface( bplante4 );
+	SDL_FreeSurface( bpelle );
 	SDL_FreeSurface( bMenuJeu );
 
 	TTF_CloseFont(police);
@@ -457,7 +470,8 @@ void sourisJeu(int x,int y){
 			bplante1 = IMG_Load("images/BPlante0Selec.png");
 			bplante2 = IMG_Load("images/BPlante1.png");
 			bplante3 = IMG_Load("images/BPlante2.png");
-			bplante4 = IMG_Load("images/BPlante3.bmp");
+			bplante4 = IMG_Load("images/BPlante3.png");
+			bpelle = IMG_Load("images/BPelle.png");
 			utilise = 1;
 		}
 		else{
@@ -471,7 +485,8 @@ void sourisJeu(int x,int y){
 			bplante1 = IMG_Load("images/BPlante0.png");
 			bplante2 = IMG_Load("images/BPlante1Selec.png");
 			bplante3 = IMG_Load("images/BPlante2.png");
-			bplante4 = IMG_Load("images/BPlante3.bmp");
+			bplante4 = IMG_Load("images/BPlante3.png");
+			bpelle = IMG_Load("images/BPelle.png");
 			utilise = 2;
 		}
 		else{
@@ -485,7 +500,8 @@ void sourisJeu(int x,int y){
 				bplante1 = IMG_Load("images/BPlante0.png");
 				bplante2 = IMG_Load("images/BPlante1.png");
 				bplante3 = IMG_Load("images/BPlante2Selec.png");
-				bplante4 = IMG_Load("images/BPlante3.bmp");
+				bplante4 = IMG_Load("images/BPlante3.png");
+				bpelle = IMG_Load("images/BPelle.png");
 				utilise = 3;
 			}
 			else{
@@ -499,11 +515,27 @@ void sourisJeu(int x,int y){
 				bplante1 = IMG_Load("images/BPlante0.png");
 				bplante2 = IMG_Load("images/BPlante1.png");
 				bplante3 = IMG_Load("images/BPlante2.png");
-				bplante4 = IMG_Load("images/BPlante3Selc.bmp");
+				bplante4 = IMG_Load("images/BPlante3Selc.png");
+				bpelle = IMG_Load("images/BPelle.png");
 				utilise = 4;
 			}
 			else{
-				bplante4 = IMG_Load("images/BPlante3.bmp");
+				bplante4 = IMG_Load("images/BPlante3.png");
+				utilise = 0;
+			}
+	}
+
+	if (x>wBpelle && x<wBpelle+118 && y>hBpelle && y<hBpelle+71 ){
+			if (utilise !=5){
+				bplante1 = IMG_Load("images/BPlante0.png");
+				bplante2 = IMG_Load("images/BPlante1.png");
+				bplante3 = IMG_Load("images/BPlante2.png");
+				bplante4 = IMG_Load("images/BPlante3.png");
+				bpelle = IMG_Load("images/BPelleSelec.png");
+				utilise = 5;
+			}
+			else{
+				bpelle = IMG_Load("images/BPelle.png");
 				utilise = 0;
 			}
 	}
@@ -522,11 +554,18 @@ void sourisJeu(int x,int y){
 	}
 
 	//clic sur un soleil
-	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->type == 0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL){
+	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL){
 		argentActuel = argentActuel + 25;
 		SDL_FreeSurface((tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1)->imageBalle);
 		Balle_destruct(tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1);
 		tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1=NULL;
+	}
+
+	//pelle
+	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]!=NULL && utilise == 5 ){
+			SDL_FreeSurface(tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->imagePlante);
+			Plante_destruct(tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]);
+			tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]=NULL;
 	}
 }
 
@@ -551,6 +590,6 @@ void posePlante(int i, int j){
 	else if (utilise == 4 && argentActuel >= 75){
 		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 200, "nom4", 2); //il faut modifier le titre
 		tabPlante[i][j]->imagePlante = IMG_Load("images/Plante3.png"); //on charge l'image a mettre
-		argentActuel = argentActuel - 125;
+		argentActuel = argentActuel - 75;
 	}
 }
