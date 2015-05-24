@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -8,8 +9,16 @@
 #include "zombie.h"
 #include "main.h"
 
+
+
 int appel = 0; // permet de savoir si on appel principalJeu();
 Uint32 vitesseZTimer = 0; //Timer
+Uint32 timerApparition = 0; //permet de gérer l'apparition des vagues de zombie
+Uint32 interval2Zombie = 0;
+int difficulte = 1; //influe sur l'arrivée des zombies
+int nbZombie = 0; //nombre de zombie apparu au court d'une vague
+int nbZombieMax = 0; //nombre de zombie pour une vague donné
+
 
 //le texte
 TTF_Font *police = NULL;
@@ -17,7 +26,6 @@ int argentActuel = NULL;
 char argent[12];
 SDL_Surface* txtArgent = NULL;
 SDL_Color color = { 0, 0, 0 };
-
 int scoreActuel = NULL;
 char score[12];
 SDL_Surface* txtScore = NULL;
@@ -34,7 +42,7 @@ SDL_Surface* balle = NULL;
 //SDL_Surface* plante[5][9]; //damier du jeu qui contindra les image des plantes
 
 Plante *tabPlante[5][9];
-Zombie *zombies[5];
+Zombie *zombies[MAX_ZOMBIE];
 
 //dim Bplante1
 int wBplante1 = NULL;//dimention de l'image en x
@@ -55,8 +63,10 @@ int presence_zombie[] = {0,0,0,0,0}; //permet de savoir si il y a au moins un zo
 //------------------------------------------------------------------------------------
 void principalJeu(){
 	vitesseZTimer = SDL_GetTicks();
+	timerApparition = SDL_GetTicks();
+	srand(time(NULL));
 	appel = 1;
-	argentActuel = 1000;
+	argentActuel = 750;
 	scoreActuel =0;
 	int i;
 	int j;
@@ -67,18 +77,19 @@ void principalJeu(){
 			tabPlante[i][j]=NULL;
 		}
 	}
+	/*
+	zombies[0]=Zombie_relou(0);
+	zombies[1]=Zombie_relou(HAUTEUR_CASE);
+	zombies[2]=Zombie_relou(2*HAUTEUR_CASE);
+	zombies[3]=Zombie_relou(3*HAUTEUR_CASE);
+	zombies[4]=Zombie_relou(4*HAUTEUR_CASE);*/
 
-	zombies[0]=Zombie_base(HAUTEUR_CASE);
-	zombies[1]=Zombie_base(HAUTEUR_CASE);
-	zombies[2]=Zombie_base(2*HAUTEUR_CASE);
-	zombies[3]=Zombie_base(3*HAUTEUR_CASE);
-	zombies[4]=Zombie_base(4*HAUTEUR_CASE);
 
 }
 
 void interfaceJeu(){ //crée l'interface du jeu
 
-	fond = IMG_Load( "images/fond.png" );
+	fond = IMG_Load( "images/fond.bmp" );
 	
 	//Bouton plante1
 	bplante1 = IMG_Load("images/BPlante0.png");
@@ -122,14 +133,14 @@ void plante_attaque(Plante *p){
 
 			if (p->b1 != NULL){
 
-				if(degatBalle(zombies[i],p->b1) || (p->b1)->pos_bx>9*LARGEUR_CASE){
+				if(degatBalle(zombies[i],p->b1, p->type) || (p->b1)->pos_bx>9*LARGEUR_CASE){
 					SDL_FreeSurface((p->b1)->imageBalle);
 					Balle_destruct(p->b1);
 					p->b1=NULL;
 				}
 			}
 			if (p->b2 != NULL){
-				if(degatBalle(zombies[i],p->b2)|| (p->b2)->pos_bx>9*LARGEUR_CASE){
+				if(degatBalle(zombies[i],p->b2, p->type)|| (p->b2)->pos_bx>9*LARGEUR_CASE){
 					SDL_FreeSurface((p->b2)->imageBalle);
 					Balle_destruct(p->b2);
 					p->b2=NULL;
@@ -158,6 +169,92 @@ void presenceZombieInit(){
 		presence_zombie[i]=0;
 	}
 }
+
+//ajoute un zombie à la liste si il y a une case vide
+void ajouterZombie(Zombie *z){
+	int i=0,fait=0;
+	while(i<MAX_ZOMBIE && fait==0){
+		if(zombies[i]==NULL){
+			zombies[i]=z;
+			fait=1;
+		}
+		i++;
+	}
+}
+
+
+
+Zombie *creationZombieAleatoire(int prcZombie1,int prcZombie2, int prcZombie3 ){
+	int tirage, ligne;
+	tirage=rand()%101+1;
+	ligne=rand()%5;
+
+	if(tirage>0 && tirage<=prcZombie1){
+		return Zombie_base(ligne*HAUTEUR_CASE);
+	}else if(tirage>prcZombie1 && tirage<=prcZombie2){
+		return Zombie_cool(ligne*HAUTEUR_CASE);
+	}else if(tirage>prcZombie2 && tirage<=prcZombie3){
+		return Zombie_relou(ligne*HAUTEUR_CASE);
+	}
+
+	return Zombie_base(ligne*HAUTEUR_CASE);
+}
+
+
+Zombie *creationZombie(){
+
+	Zombie *z;
+	switch(difficulte){
+		case 1:
+			z=creationZombieAleatoire(100,101,102);
+			break;
+		case 2:
+			z=creationZombieAleatoire(80,100,101);
+			break;
+		case 3:
+			z=creationZombieAleatoire(70,95,100);
+			break;
+		case 4:
+			z=creationZombieAleatoire(60,90,100);
+			break;
+		case 5:
+			z=creationZombieAleatoire(50,80,100);
+			break;
+		case 6:
+			z=creationZombieAleatoire(40,70,100);
+			break;
+		default:
+			z=creationZombieAleatoire(20,60,100);
+			break;
+	}
+	return z;
+}
+
+
+void nouveauZombie(){
+	//si le nombre de zombie max de la vague n'est pas défini on le fait
+	
+	if (nbZombieMax==0){
+		nbZombieMax=difficulte*(rand()%2+2);
+	}
+	//si l'intervalle de temps entre deux zombies est passé on crées le suivant
+	if (interval2Zombie+INTERVALLE_ZOMBIE<SDL_GetTicks()){
+		ajouterZombie(creationZombie());
+		nbZombie++;
+		interval2Zombie=SDL_GetTicks();
+		
+
+	}
+	//si le nombre de zombie de la vague est atteint on rénitialise les variables
+	if (nbZombie==nbZombieMax){
+		nbZombie=0;
+		nbZombieMax=0;
+		timerApparition=SDL_GetTicks();
+		difficulte++;
+
+	}
+
+}	
 
 
 void actualisationJeu(SDL_Surface* screen){//actualise les positions
@@ -197,14 +294,14 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	int j;
 
 	//Boucle qui gère les zombies
-	for(i=0;i<5;i++){ 
+	for(i=0;i<MAX_ZOMBIE;i++){ 
 
 
 
 		if(zombies[i]!=NULL){ //si le zombie n'est pas mort
 
 			if (zombies[i]->pv<0){
-				scoreActuel = scoreActuel + 1;
+				scoreActuel=scoreActuel+zombies[i]->type;
 				SDL_FreeSurface(zombies[i]->img);
 				destructZombie(zombies[i]);
 				zombies[i]=NULL;
@@ -212,12 +309,20 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 				presence_zombie[zombies[i]->position_y/HAUTEUR_CASE]=1;
 
 				//Si il y a une plante attaquer, sinon avancer
-				if(tabPlante[zombies[i]->position_y/HAUTEUR_CASE][zombies[i]->position_x/LARGEUR_CASE-1]!=NULL && vitesseZTimer+100<SDL_GetTicks()) {
+				if(tabPlante[zombies[i]->position_y/HAUTEUR_CASE][zombies[i]->position_x/LARGEUR_CASE-1]!=NULL && vitesseZTimer+VITESSE_ZOMBIE<SDL_GetTicks()) {
 
-					attaquerZ(tabPlante[zombies[i]->position_y/HAUTEUR_CASE][zombies[i]->position_x/LARGEUR_CASE-1]);
+					attaquerZ(tabPlante[zombies[i]->position_y/HAUTEUR_CASE][zombies[i]->position_x/LARGEUR_CASE-1], zombies[i]);
 
-				}else if(vitesseZTimer+100<SDL_GetTicks()){
+				}else if(vitesseZTimer+VITESSE_ZOMBIE<SDL_GetTicks()){
 					avancerZ(zombies[i]);
+				}
+
+				//test si un zombie à passer la limite
+				if (zombies[i]->position_x<LARGEUR_CASE){
+					quitterJeu();
+					appel = 0;
+					utilise = 0;
+					interfaceMenu();
 				}
 
 				SDL_Rect zombieTest = { zombies[i]->position_x,zombies[i]->position_y, 0, 0}; //Position  du zombie
@@ -275,12 +380,16 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 		}
 	}
 
-
+	//remet à jour la présence des zombies sur les lignes
 	presenceZombieInit();
 
-	if(vitesseZTimer+100<SDL_GetTicks()){
+	if(vitesseZTimer+VITESSE_ZOMBIE<SDL_GetTicks()){
 		vitesseZTimer=SDL_GetTicks();
 	}	
+	if(timerApparition+INTER_2_VAGUES<SDL_GetTicks()){
+		nouveauZombie();
+		
+	}
 			
 
 }

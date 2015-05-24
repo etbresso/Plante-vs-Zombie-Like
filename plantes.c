@@ -94,12 +94,27 @@ void chargerSoleil(Plante *p){
 
 
 
-int degatBalle (Zombie *z, Balle *b){
+int degatBalle (Zombie *z, Balle *b, int type){
+
 
 	if(	(z->position_y)/HAUTEUR_CASE==(b->pos_by)/HAUTEUR_CASE
 		&& (b->pos_bx+DIAMETRE_BALLE)<(z->position_x+LARGEUR_ZOMBIE) 
-		&& (b->pos_bx+DIAMETRE_BALLE)>(z->position_x-1)){
+		&& (b->pos_bx+DIAMETRE_BALLE)>(z->position_x+5)){
 
+		//20% de chance de ralentir le zombie pour la plante de type 2
+		if(type==2 && rand()%10<2 && z->pas>0){
+			z->pas=z->pas-1;
+
+			//Nouveau sprite
+			if (z->type==1){
+				z->img=IMG_Load("images/zombie1Gel.png");
+			}else if(z->type==2){
+				z->img=IMG_Load("images/zombie2Gel.png");
+			}else if(z->type==3){
+				z->img=IMG_Load("images/zombie3Gel.png");
+			}
+			
+		}
 		z->pv-=1;
 		return 1;
 
