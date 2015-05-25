@@ -6,13 +6,12 @@
 #define DIAMETRE_SOLEIL 60
 #define LARGEUR_ZOMBIE 64
 #define HAUTEUR_ZOMBIE 144
-#define INTERVALLE_BALLE 250
-#define INTERVALLE_SOLEIL 1650
+#define INTERVALLE_BALLE 3000
+#define INTERVALLE_SOLEIL 9000
 #define MAX_ZOMBIE 21
 #define INTERVALLE_ZOMBIE 9000 //intervalle de temps entre l'apparition de 2 zombies d'une même vague
 #define VITESSE_ZOMBIE 80 //plus elle est grande plus les zombies sont lent
 #define INTER_2_VAGUES 55000  //intervalle de temps entre 2 vagues
-
 
 
 typedef struct Balle Balle;

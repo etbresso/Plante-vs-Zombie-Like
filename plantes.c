@@ -71,7 +71,6 @@ void envoyerBalle(Plante *p){
 	}
 }
 
-
 void chargerBalle(Plante *p){
 
 		if(p->b1 == NULL && p->b2 == NULL && p->dureeBalles>INTERVALLE_BALLE){

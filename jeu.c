@@ -15,6 +15,7 @@ int appel = 0; // permet de savoir si on appel principalJeu();
 Uint32 vitesseZTimer = 0; //Timer
 Uint32 timerApparition = 0; //permet de gérer l'apparition des vagues de zombie
 Uint32 interval2Zombie = 0;
+Uint32 timerBalle = 0;
 int difficulte = 1; //influe sur l'arrivée des zombies
 int nbZombie = 0; //nombre de zombie apparu au court d'une vague
 int nbZombieMax = 0; //nombre de zombie pour une vague donné
@@ -23,13 +24,11 @@ int nbZombieMax = 0; //nombre de zombie pour une vague donné
 //le texte
 TTF_Font *police = NULL;
 int argentActuel = NULL;
-SDL_Color color = { 0, 0, 0 };
-
 char argent[7];
 char nbArgent[4];
 SDL_Surface* txtArgent = NULL;
 SDL_Surface* txtNbArgent = NULL;
-
+SDL_Color color = { 0, 0, 0 };
 int scoreActuel = NULL;
 char score[12];
 SDL_Surface* txtScore = NULL;
@@ -74,20 +73,15 @@ int hBMenuJeu = NULL;//dimention de l'image en y
 int utilise = 0; //permet de savoir si on a cliqué sur le bouton d'une plante
 
 int presence_zombie[] = {0,0,0,0,0}; //permet de savoir si il y a au moins un zombie sur la ligne i
-
-int fini =NULL;
-
-
-
+//------------------------------------------------------------------------------------
 void principalJeu(){
 	vitesseZTimer = SDL_GetTicks();
 	timerApparition = SDL_GetTicks();
+	timerBalle = SDL_GetTicks();
 	srand(time(NULL));
 	appel = 1;
 	argentActuel = 100;
 	scoreActuel = 0;
-
-	fini = 0;
 	int i;
 	int j;
 
@@ -103,6 +97,7 @@ void principalJeu(){
 	zombies[2]=Zombie_relou(2*HAUTEUR_CASE);
 	zombies[3]=Zombie_relou(3*HAUTEUR_CASE);
 	zombies[4]=Zombie_relou(4*HAUTEUR_CASE);*/
+
 
 
 }
@@ -149,7 +144,7 @@ void interfaceJeu(){ //crée l'interface du jeu
  	sprintf(nbArgent, "%d", argentActuel);
  	txtNbArgent = TTF_RenderText_Solid(police, nbArgent, color);
 
- 	sprintf(score, "Score  %d", scoreActuel);
+ 	sprintf(argent, "Score  %d", scoreActuel);
  	txtScore = TTF_RenderText_Solid(police, score, color);
 }
 
@@ -294,6 +289,9 @@ void nouveauZombie(){
 
 
 void actualisationJeu(SDL_Surface* screen){//actualise les positions
+
+	int fini;
+
 	//actualisation de la postion du fond
 	SDL_BlitSurface( fond, NULL, screen, NULL );
 
@@ -390,8 +388,10 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 							
 					tabPlante[i][j]=NULL;
 				}else {
-
-					tmp->dureeBalles+=1;
+					tmp->dureeBalles+=(SDL_GetTicks()-timerBalle);
+					printf("duree:%d\n", tmp->dureeBalles);
+					printf("sdl:%d timer:%d res:%d\n", SDL_GetTicks(),timerBalle,(SDL_GetTicks()-timerBalle));
+					
 					
 
 					//creation de soleil ou balle 
@@ -424,7 +424,7 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 
 		}
 	}
-
+	timerBalle=SDL_GetTicks();
 	//remet à jour la présence des zombies sur les lignes
 	presenceZombieInit();
 
@@ -580,7 +580,7 @@ void sourisJeu(int x,int y){
 	}
 
 	//clic sur un soleil
-	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL && x>=(x/128)*128+68 && x<=(x/128)*128+128 && y>=(y/144)*144+84 && y<=(y/144)*144+144){
+	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL){
 		argentActuel = argentActuel + 25;
 		SDL_FreeSurface((tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1)->imageBalle);
 		Balle_destruct(tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1);
