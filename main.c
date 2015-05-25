@@ -54,16 +54,16 @@ void interfaceMenu(){
   menu = SDL_LoadBMP( "images/menu.bmp" );
 
   bjouer = SDL_LoadBMP( "images/Jouer.bmp" );
-  wBjouer = 1280/2 - bjouer->w/2;
-  hBjouer = 720/2 - bjouer->h/2;
+  wBjouer = 1280/2 - bjouer->w/2 + 190;
+  hBjouer = 720/2 - bjouer->h/2 + 140;
 
   bcredit = SDL_LoadBMP( "images/Crédit.bmp" );
-  wBcredit = 1280/2 - bcredit->w/2;
-  hBcredit = 720/2 - bcredit->h/2 + 120;
+  wBcredit = 1280/2 - bcredit->w/2 + 40;
+  hBcredit = 720/2 - bcredit->h/2 + 270;
 
   bquitter = SDL_LoadBMP( "images/Quitter.bmp" );
-  wBquitter = 1280/2 - bquitter->w/2;
-  hBquitter = 720/2 - bquitter->h/2 + 240;
+  wBquitter = 1280/2 - bquitter->w/2 + 340;
+  hBquitter = 720/2 - bquitter->h/2 + 270;
 }
 
 void quitterMenu(){

@@ -91,14 +91,6 @@ void principalJeu(){
 			tabPlante[i][j]=NULL;
 		}
 	}
-	/*
-	zombies[0]=Zombie_relou(0);
-	zombies[1]=Zombie_relou(HAUTEUR_CASE);
-	zombies[2]=Zombie_relou(2*HAUTEUR_CASE);
-	zombies[3]=Zombie_relou(3*HAUTEUR_CASE);
-	zombies[4]=Zombie_relou(4*HAUTEUR_CASE);*/
-
-
 
 }
 
@@ -314,9 +306,6 @@ void actualisationJeu(SDL_Surface* screen){//actualise les positions
 	SDL_Rect dimBMenuJeu = { wBMenuJeu,hBMenuJeu, 0, 0}; //Position du bouton de la plante3
 	SDL_BlitSurface( bMenuJeu, NULL, screen, &dimBMenuJeu );//actualisation de la postion du Bouton de la plante3
 
-	//balle
-	//SDL_Rect rouge = { HAUTEUR_CASE/2 - balle->w/2-8,LARGEUR_CASE/2 - balle->h/2, 0, 0};	
-	//SDL_BlitSurface( balle, NULL, screen, &rouge );
 
 	//texte
 	SDL_FreeSurface(txtArgent);
@@ -580,7 +569,7 @@ void sourisJeu(int x,int y){
 	}
 
 	//clic sur un soleil
-	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL){
+	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL && x>=(x/128)*128+68 && x<=(x/128)*128+128 && y>=(y/144)*144+84 && y<=(y/144)*144+144){
 		argentActuel = argentActuel + 25;
 		SDL_FreeSurface((tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1)->imageBalle);
 		Balle_destruct(tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1);

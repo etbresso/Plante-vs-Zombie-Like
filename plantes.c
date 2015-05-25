@@ -128,18 +128,4 @@ int degatBalle (Zombie *z, Balle *b, int type){
 	}
 	return 0;
 }
-/*
-void affichage(Plante *p){
-	printf("%c(%d,%d,%d,%c)",p->type,p->posx,p->posy,p->vie_plante,p->nom);
-}
 
-void envoieSoleil(Plante *p){
-
-if(type==soleil){
-SDL_Surface* fond = NULL;
-soleil = SDL_LoadBMP("images/soleil.bmp");
-SDL_Rect  rouge = { 144/2 - soleil->w/2-8,128/2 - soleil->h/2, 0, 0};
-} 
-}
-
- */

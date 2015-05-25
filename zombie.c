@@ -54,18 +54,6 @@ void afficherZ(Zombie* z1){
 	printf("pv: %d\n",z1->pv );
 }
 
-//pour les zombieperch
-/*
-void affichage_zombieperch(Zombieperch *p){
-	printf("Zombie p\n" );
-	printf("position x: %d\n",p->position_x );
-	printf("position y: %d\n",p->position_y );
-	printf("pv: %d\n",p->pv );
-	printf("si-pouvoir-utilisé=%d\n",p->attaque_util);
-	printf("\n");
-}*/
-
-
 void attaquerZ(Plante* p, Zombie *z){
 
 	if(z->type==3){
@@ -86,31 +74,9 @@ void attaquerZ(Plante* p, Zombie *z){
 		p->vie_plante-=1;
 }
 	
-
-
-/*
-void plante_attack_zombieperch(Zombieperch* per,Plante* p){
-	if(per->attaque_util==0){
-		per->attaque_util=1;
-		per->position_x=-256;
-		printf("saute");
-	}
-	else{
-		p->vie_plante-=1;
-	}
-
-}*/
-
 void avancerZ(Zombie* z1){
 	z1->position_x=z1->position_x-z1->pas;
 }
 void destructZombie(Zombie *z){
 	free(z);
 }
-/*
-void tesGameOver(Zombie *p){
-	if(get_x_zombie(*p)<=128){
-		printf("perdu !!");
-	}
-} 
-*/
