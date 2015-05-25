@@ -78,7 +78,7 @@ void principalJeu(){
 	timerApparition = SDL_GetTicks();
 	srand(time(NULL));
 	appel = 1;
-	argentActuel = 7500;
+	argentActuel = 75;
 	scoreActuel = 0;
 	int i;
 	int j;
@@ -258,7 +258,11 @@ void nouveauZombie(){
 	//si le nombre de zombie max de la vague n'est pas défini on le fait
 	
 	if (nbZombieMax==0){
-		nbZombieMax=difficulte*(rand()%2+2);
+		if(difficulte<8){
+				nbZombieMax=difficulte*(rand()%2+2);
+		}else{
+			nbZombieMax=7*(rand()%2+2);	
+		}	
 	}
 	//si l'intervalle de temps entre deux zombies est passé on crées le suivant
 	if (interval2Zombie+INTERVALLE_ZOMBIE<SDL_GetTicks()){
