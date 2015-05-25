@@ -30,6 +30,7 @@ void Balle_destruct(Balle *b){
 	free(b);
 }
 
+
 Plante* Plante_construct(int posx ,int posy,int vie_plante, char* nom, int type){
 	Plante *res=malloc(sizeof(Plante));
 	res->posx=posx;
@@ -37,7 +38,13 @@ Plante* Plante_construct(int posx ,int posy,int vie_plante, char* nom, int type)
 	res->vie_plante=vie_plante;
 	res->nom=nom;
 	res->type=type;
-	res->dureeBalles=INTERVALLE_BALLE;
+	
+	if (type==0){
+		res->dureeBalles=0;
+	}else{
+		res->dureeBalles=INTERVALLE_BALLE;
+	}
+	
 	res->imagePlante = NULL;
 	res->b1 = NULL;
 	res->b2 = NULL;
@@ -57,31 +64,31 @@ void Plante_destruct(Plante *p){
 void envoyerBalle(Plante *p){
 	
 	if(p->b1 != NULL){
-		(p->b1)->pos_bx+=2;
+		(p->b1)->pos_bx+=4;
 	}
 	if(p->b2 != NULL){
-		(p->b2)->pos_bx+=2;
+		(p->b2)->pos_bx+=4;
 	}
 }
 
 
 void chargerBalle(Plante *p){
 
-	if(p->b1 == NULL && p->b2 == NULL && p->dureeBalles>INTERVALLE_BALLE){
+		if(p->b1 == NULL && p->b2 == NULL && p->dureeBalles>INTERVALLE_BALLE){
 
-		p->b1=Balle_construct(p->posx+93 ,p->posy+42, p->type);
-		p->dureeBalles=0;
+			p->b1=Balle_construct(p->posx+93 ,p->posy+42, p->type);
+			p->dureeBalles=0;
 
-	}else if(p->b2 == NULL && p->dureeBalles>INTERVALLE_BALLE ){
+		}else if(p->b2 == NULL && p->dureeBalles>INTERVALLE_BALLE ){
 
-		p->b2=Balle_construct(p->posx+93 ,p->posy+42, p->type);
-		p->dureeBalles=0;
+			p->b2=Balle_construct(p->posx+93 ,p->posy+42, p->type);
+			p->dureeBalles=0;
 
-	}else if(p->b1 == NULL && p->dureeBalles>INTERVALLE_BALLE){
+		}else if(p->b1 == NULL && p->dureeBalles>INTERVALLE_BALLE){
 
-		p->b1=Balle_construct(p->posx+93 ,p->posy+42, p->type);
-		p->dureeBalles=0;
-	}
+			p->b1=Balle_construct(p->posx+93 ,p->posy+42, p->type);
+			p->dureeBalles=0;
+		}
 }
 
 void chargerSoleil(Plante *p){
@@ -102,10 +109,11 @@ int degatBalle (Zombie *z, Balle *b, int type){
 		&& (b->pos_bx+DIAMETRE_BALLE)>(z->position_x+5)){
 
 		//20% de chance de ralentir le zombie pour la plante de type 2
-		if(type==2 && rand()%10<2 && z->pas>0){
+		if(type==2 && rand()%10<2 && z->pas>1){
 			z->pas=z->pas-1;
 
 			//Nouveau sprite
+			SDL_FreeSurface(z->img);
 			if (z->type==1){
 				z->img=IMG_Load("images/zombie1Gel.png");
 			}else if(z->type==2){

@@ -46,6 +46,7 @@ Zombie* Zombie_relou(int y){
 	return res;
 }
 
+
 void afficherZ(Zombie* z1){
 	printf("Zombie z1\n" );
 	printf("position x: %d\n",z1->position_x );
@@ -66,15 +67,27 @@ void affichage_zombieperch(Zombieperch *p){
 
 
 void attaquerZ(Plante* p, Zombie *z){
+
 	if(z->type==3){
 		z->position_x= p->posx-1;
 		z->type=2;
-		z->img=IMG_Load("images/zombie2.png");
-	}else{
-		p->vie_plante-=1;
+		SDL_FreeSurface(z->img);
+		if(z->pas==1){
+			z->img=IMG_Load("images/zombie2Gel.png");
+		}else{
+			z->img=IMG_Load("images/zombie2.png");
+		}
+		
 	}
-	
+		if(p->type==3 && rand()%50<5){
+			
+			z->pv-=1;
+		}
+		p->vie_plante-=1;
 }
+	
+
+
 /*
 void plante_attack_zombieperch(Zombieperch* per,Plante* p){
 	if(per->attaque_util==0){

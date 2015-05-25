@@ -15,7 +15,7 @@ int appel = 0; // permet de savoir si on appel principalJeu();
 Uint32 vitesseZTimer = 0; //Timer
 Uint32 timerApparition = 0; //permet de gérer l'apparition des vagues de zombie
 Uint32 interval2Zombie = 0;
-int difficulte = 2; //influe sur l'arrivée des zombies
+int difficulte = 1; //influe sur l'arrivée des zombies
 int nbZombie = 0; //nombre de zombie apparu au court d'une vague
 int nbZombieMax = 0; //nombre de zombie pour une vague donné
 
@@ -78,7 +78,7 @@ void principalJeu(){
 	timerApparition = SDL_GetTicks();
 	srand(time(NULL));
 	appel = 1;
-	argentActuel = 75;
+	argentActuel = 100;
 	scoreActuel = 0;
 	int i;
 	int j;
@@ -148,30 +148,35 @@ void interfaceJeu(){ //crée l'interface du jeu
 
 //charge la balle si necessaire et fait avancer celle déjà sur le terrain
 void plante_attaque(Plante *p){
-	chargerBalle(p);
+	if(p->type!=3){
+		chargerBalle(p);
 
-	int i;
-	for(i=0;i<5;i++){
-		if(zombies[i]!=NULL){
+		int i;
+		for(i=0;i<MAX_ZOMBIE;i++){
+			if(zombies[i]!=NULL){
 
-			if (p->b1 != NULL){
+				if (p->b1 != NULL){
 
-				if(degatBalle(zombies[i],p->b1, p->type) || (p->b1)->pos_bx>9*LARGEUR_CASE){
-					SDL_FreeSurface((p->b1)->imageBalle);
-					Balle_destruct(p->b1);
-					p->b1=NULL;
+					if(degatBalle(zombies[i],p->b1, p->type) || (p->b1)->pos_bx>9*LARGEUR_CASE){
+						SDL_FreeSurface((p->b1)->imageBalle);
+						Balle_destruct(p->b1);
+						p->b1=NULL;
+					}
+				}
+				if (p->b2 != NULL){
+					if(degatBalle(zombies[i],p->b2, p->type)|| (p->b2)->pos_bx>9*LARGEUR_CASE){
+						SDL_FreeSurface((p->b2)->imageBalle);
+						Balle_destruct(p->b2);
+						p->b2=NULL;
+					}		
 				}
 			}
-			if (p->b2 != NULL){
-				if(degatBalle(zombies[i],p->b2, p->type)|| (p->b2)->pos_bx>9*LARGEUR_CASE){
-					SDL_FreeSurface((p->b2)->imageBalle);
-					Balle_destruct(p->b2);
-					p->b2=NULL;
-				}		
-			}
-		}
 
-	}	
+		}	
+
+
+	}
+	
 }
 
 void gererSoleil(Plante *p){
@@ -209,7 +214,7 @@ void ajouterZombie(Zombie *z){
 
 Zombie *creationZombieAleatoire(int prcZombie1,int prcZombie2, int prcZombie3 ){
 	int tirage, ligne;
-	tirage=rand()%101+1;
+	tirage=rand()%100+1;
 	ligne=rand()%5;
 
 	if(tirage>0 && tirage<=prcZombie1){
@@ -258,11 +263,7 @@ void nouveauZombie(){
 	//si le nombre de zombie max de la vague n'est pas défini on le fait
 	
 	if (nbZombieMax==0){
-		if(difficulte<8){
-				nbZombieMax=difficulte*(rand()%2+2);
-		}else{
-			nbZombieMax=7*(rand()%2+2);	
-		}	
+		nbZombieMax=difficulte*(rand()%2+2);
 	}
 	//si l'intervalle de temps entre deux zombies est passé on crées le suivant
 	if (interval2Zombie+INTERVALLE_ZOMBIE<SDL_GetTicks()){
@@ -591,22 +592,22 @@ void sourisJeu(int x,int y){
 
 void posePlante(int i, int j){
 	if (utilise == 1  && argentActuel >= 50){
-		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE,i*HAUTEUR_CASE, 200, "nom1", 0);
+		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE,i*HAUTEUR_CASE, 100, "nom1", 0);
 		tabPlante[i][j]->imagePlante = IMG_Load("images/plante0.png"); //on charge l'image a mettre
 		argentActuel = argentActuel - 50;
 	}
 	else if (utilise == 2 && argentActuel >= 100){
-		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 200, "nom2", 1);
+		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 125, "nom2", 1);
 		tabPlante[i][j]->imagePlante = IMG_Load("images/plante1.png"); //on charge l'image a mettre
 		argentActuel = argentActuel - 100;
 	}
 	else if (utilise == 3 && argentActuel >= 125){
-		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 200, "nom3", 2);
+		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 125, "nom3", 2);
 		tabPlante[i][j]->imagePlante = IMG_Load("images/plante2.png"); //on charge l'image a mettre
 		argentActuel = argentActuel - 125;
 	}
 	else if (utilise == 4 && argentActuel >= 75){
-		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 200, "nom4", 2); //il faut modifier le titre
+		tabPlante[i][j]=Plante_construct((j+1)*LARGEUR_CASE, i*HAUTEUR_CASE, 50, "nom4", 3); //il faut modifier le titre
 		tabPlante[i][j]->imagePlante = IMG_Load("images/Plante3.png"); //on charge l'image a mettre
 		argentActuel = argentActuel - 75;
 	}
