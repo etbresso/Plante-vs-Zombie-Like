@@ -23,11 +23,13 @@ int nbZombieMax = 0; //nombre de zombie pour une vague donné
 //le texte
 TTF_Font *police = NULL;
 int argentActuel = NULL;
+SDL_Color color = { 0, 0, 0 };
+
 char argent[7];
 char nbArgent[4];
 SDL_Surface* txtArgent = NULL;
 SDL_Surface* txtNbArgent = NULL;
-SDL_Color color = { 0, 0, 0 };
+
 int scoreActuel = NULL;
 char score[12];
 SDL_Surface* txtScore = NULL;
@@ -72,7 +74,11 @@ int hBMenuJeu = NULL;//dimention de l'image en y
 int utilise = 0; //permet de savoir si on a cliqué sur le bouton d'une plante
 
 int presence_zombie[] = {0,0,0,0,0}; //permet de savoir si il y a au moins un zombie sur la ligne i
-//------------------------------------------------------------------------------------
+
+int fini =NULL;
+
+
+
 void principalJeu(){
 	vitesseZTimer = SDL_GetTicks();
 	timerApparition = SDL_GetTicks();
@@ -80,6 +86,8 @@ void principalJeu(){
 	appel = 1;
 	argentActuel = 100;
 	scoreActuel = 0;
+
+	fini = 0;
 	int i;
 	int j;
 
@@ -141,7 +149,7 @@ void interfaceJeu(){ //crée l'interface du jeu
  	sprintf(nbArgent, "%d", argentActuel);
  	txtNbArgent = TTF_RenderText_Solid(police, nbArgent, color);
 
- 	sprintf(argent, "Score  %d", scoreActuel);
+ 	sprintf(score, "Score  %d", scoreActuel);
  	txtScore = TTF_RenderText_Solid(police, score, color);
 }
 
@@ -286,7 +294,6 @@ void nouveauZombie(){
 
 
 void actualisationJeu(SDL_Surface* screen){//actualise les positions
-	int fini =0;
 	//actualisation de la postion du fond
 	SDL_BlitSurface( fond, NULL, screen, NULL );
 
@@ -573,7 +580,7 @@ void sourisJeu(int x,int y){
 	}
 
 	//clic sur un soleil
-	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL){
+	else if(y/HAUTEUR_CASE>=0 && x/LARGEUR_CASE-1>=0 && tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1 != NULL && x>=(x/128)*128+68 && x<=(x/128)*128+128 && y>=(y/144)*144+84 && y<=(y/144)*144+144){
 		argentActuel = argentActuel + 25;
 		SDL_FreeSurface((tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1)->imageBalle);
 		Balle_destruct(tabPlante[y/HAUTEUR_CASE][x/LARGEUR_CASE-1]->b1);
