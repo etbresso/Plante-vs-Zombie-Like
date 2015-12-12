@@ -1,3 +1,3 @@
 # ProjetC
-Projet C - Telecom Nancy 1A
-Réalisation du Plante vs Zombie Like.
+Projet Libre en C - Telecom Nancy 1A
+Réalisation d'un Plante vs Zombie Like.
